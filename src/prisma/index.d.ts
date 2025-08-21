@@ -33,6 +33,28 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * 
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
+ * Model Translation
+ * 
+ */
+export type Translation = $Result.DefaultSelection<Prisma.$TranslationPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const Role: {
+  CUSTOMER: 'CUSTOMER',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+}
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 /**
  * ##  Prisma Client ʲˢ
@@ -191,6 +213,16 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.translation`: Exposes CRUD operations for the **Translation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Translations
+    * const translations = await prisma.translation.findMany()
+    * ```
+    */
+  get translation(): Prisma.TranslationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -634,7 +666,8 @@ export namespace Prisma {
     User: 'User',
     Account: 'Account',
     Session: 'Session',
-    VerificationToken: 'VerificationToken'
+    VerificationToken: 'VerificationToken',
+    Translation: 'Translation'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -653,7 +686,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "translation"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -953,6 +986,80 @@ export namespace Prisma {
           }
         }
       }
+      Translation: {
+        payload: Prisma.$TranslationPayload<ExtArgs>
+        fields: Prisma.TranslationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TranslationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TranslationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          findFirst: {
+            args: Prisma.TranslationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TranslationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          findMany: {
+            args: Prisma.TranslationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>[]
+          }
+          create: {
+            args: Prisma.TranslationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          createMany: {
+            args: Prisma.TranslationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TranslationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>[]
+          }
+          delete: {
+            args: Prisma.TranslationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          update: {
+            args: Prisma.TranslationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          deleteMany: {
+            args: Prisma.TranslationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TranslationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TranslationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>[]
+          }
+          upsert: {
+            args: Prisma.TranslationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TranslationPayload>
+          }
+          aggregate: {
+            args: Prisma.TranslationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTranslation>
+          }
+          groupBy: {
+            args: Prisma.TranslationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TranslationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TranslationCountArgs<ExtArgs>
+            result: $Utils.Optional<TranslationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1049,6 +1156,7 @@ export namespace Prisma {
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
+    translation?: TranslationOmit
   }
 
   /* Types for Logging */
@@ -1194,6 +1302,7 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    role: $Enums.Role | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1202,6 +1311,7 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    role: $Enums.Role | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1210,6 +1320,7 @@ export namespace Prisma {
     email: number
     emailVerified: number
     image: number
+    role: number
     _all: number
   }
 
@@ -1228,6 +1339,7 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    role?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1236,6 +1348,7 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    role?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1244,6 +1357,7 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    role?: true
     _all?: true
   }
 
@@ -1339,6 +1453,7 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    role: $Enums.Role
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1366,6 +1481,7 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    role?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1377,6 +1493,7 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1385,6 +1502,7 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1393,9 +1511,10 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    role?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -1416,6 +1535,7 @@ export namespace Prisma {
       email: string | null
       emailVerified: Date | null
       image: string | null
+      role: $Enums.Role
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1846,6 +1966,7 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
   }
     
 
@@ -5544,6 +5665,1061 @@ export namespace Prisma {
 
 
   /**
+   * Model Translation
+   */
+
+  export type AggregateTranslation = {
+    _count: TranslationCountAggregateOutputType | null
+    _avg: TranslationAvgAggregateOutputType | null
+    _sum: TranslationSumAggregateOutputType | null
+    _min: TranslationMinAggregateOutputType | null
+    _max: TranslationMaxAggregateOutputType | null
+  }
+
+  export type TranslationAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type TranslationSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type TranslationMinAggregateOutputType = {
+    id: number | null
+    locale: string | null
+    namespace: string | null
+    key: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TranslationMaxAggregateOutputType = {
+    id: number | null
+    locale: string | null
+    namespace: string | null
+    key: string | null
+    value: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TranslationCountAggregateOutputType = {
+    id: number
+    locale: number
+    namespace: number
+    key: number
+    value: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TranslationAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type TranslationSumAggregateInputType = {
+    id?: true
+  }
+
+  export type TranslationMinAggregateInputType = {
+    id?: true
+    locale?: true
+    namespace?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TranslationMaxAggregateInputType = {
+    id?: true
+    locale?: true
+    namespace?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TranslationCountAggregateInputType = {
+    id?: true
+    locale?: true
+    namespace?: true
+    key?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TranslationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Translation to aggregate.
+     */
+    where?: TranslationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Translations to fetch.
+     */
+    orderBy?: TranslationOrderByWithRelationInput | TranslationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TranslationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Translations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Translations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Translations
+    **/
+    _count?: true | TranslationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TranslationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TranslationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TranslationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TranslationMaxAggregateInputType
+  }
+
+  export type GetTranslationAggregateType<T extends TranslationAggregateArgs> = {
+        [P in keyof T & keyof AggregateTranslation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTranslation[P]>
+      : GetScalarType<T[P], AggregateTranslation[P]>
+  }
+
+
+
+
+  export type TranslationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TranslationWhereInput
+    orderBy?: TranslationOrderByWithAggregationInput | TranslationOrderByWithAggregationInput[]
+    by: TranslationScalarFieldEnum[] | TranslationScalarFieldEnum
+    having?: TranslationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TranslationCountAggregateInputType | true
+    _avg?: TranslationAvgAggregateInputType
+    _sum?: TranslationSumAggregateInputType
+    _min?: TranslationMinAggregateInputType
+    _max?: TranslationMaxAggregateInputType
+  }
+
+  export type TranslationGroupByOutputType = {
+    id: number
+    locale: string
+    namespace: string
+    key: string
+    value: string
+    createdAt: Date
+    updatedAt: Date
+    _count: TranslationCountAggregateOutputType | null
+    _avg: TranslationAvgAggregateOutputType | null
+    _sum: TranslationSumAggregateOutputType | null
+    _min: TranslationMinAggregateOutputType | null
+    _max: TranslationMaxAggregateOutputType | null
+  }
+
+  type GetTranslationGroupByPayload<T extends TranslationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TranslationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TranslationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TranslationGroupByOutputType[P]>
+            : GetScalarType<T[P], TranslationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TranslationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    locale?: boolean
+    namespace?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["translation"]>
+
+  export type TranslationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    locale?: boolean
+    namespace?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["translation"]>
+
+  export type TranslationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    locale?: boolean
+    namespace?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["translation"]>
+
+  export type TranslationSelectScalar = {
+    id?: boolean
+    locale?: boolean
+    namespace?: boolean
+    key?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TranslationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "locale" | "namespace" | "key" | "value" | "createdAt" | "updatedAt", ExtArgs["result"]["translation"]>
+
+  export type $TranslationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Translation"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      locale: string
+      namespace: string
+      key: string
+      value: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["translation"]>
+    composites: {}
+  }
+
+  type TranslationGetPayload<S extends boolean | null | undefined | TranslationDefaultArgs> = $Result.GetResult<Prisma.$TranslationPayload, S>
+
+  type TranslationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TranslationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TranslationCountAggregateInputType | true
+    }
+
+  export interface TranslationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Translation'], meta: { name: 'Translation' } }
+    /**
+     * Find zero or one Translation that matches the filter.
+     * @param {TranslationFindUniqueArgs} args - Arguments to find a Translation
+     * @example
+     * // Get one Translation
+     * const translation = await prisma.translation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TranslationFindUniqueArgs>(args: SelectSubset<T, TranslationFindUniqueArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Translation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TranslationFindUniqueOrThrowArgs} args - Arguments to find a Translation
+     * @example
+     * // Get one Translation
+     * const translation = await prisma.translation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TranslationFindUniqueOrThrowArgs>(args: SelectSubset<T, TranslationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Translation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationFindFirstArgs} args - Arguments to find a Translation
+     * @example
+     * // Get one Translation
+     * const translation = await prisma.translation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TranslationFindFirstArgs>(args?: SelectSubset<T, TranslationFindFirstArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Translation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationFindFirstOrThrowArgs} args - Arguments to find a Translation
+     * @example
+     * // Get one Translation
+     * const translation = await prisma.translation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TranslationFindFirstOrThrowArgs>(args?: SelectSubset<T, TranslationFindFirstOrThrowArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Translations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Translations
+     * const translations = await prisma.translation.findMany()
+     * 
+     * // Get first 10 Translations
+     * const translations = await prisma.translation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const translationWithIdOnly = await prisma.translation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TranslationFindManyArgs>(args?: SelectSubset<T, TranslationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Translation.
+     * @param {TranslationCreateArgs} args - Arguments to create a Translation.
+     * @example
+     * // Create one Translation
+     * const Translation = await prisma.translation.create({
+     *   data: {
+     *     // ... data to create a Translation
+     *   }
+     * })
+     * 
+     */
+    create<T extends TranslationCreateArgs>(args: SelectSubset<T, TranslationCreateArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Translations.
+     * @param {TranslationCreateManyArgs} args - Arguments to create many Translations.
+     * @example
+     * // Create many Translations
+     * const translation = await prisma.translation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TranslationCreateManyArgs>(args?: SelectSubset<T, TranslationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Translations and returns the data saved in the database.
+     * @param {TranslationCreateManyAndReturnArgs} args - Arguments to create many Translations.
+     * @example
+     * // Create many Translations
+     * const translation = await prisma.translation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Translations and only return the `id`
+     * const translationWithIdOnly = await prisma.translation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TranslationCreateManyAndReturnArgs>(args?: SelectSubset<T, TranslationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Translation.
+     * @param {TranslationDeleteArgs} args - Arguments to delete one Translation.
+     * @example
+     * // Delete one Translation
+     * const Translation = await prisma.translation.delete({
+     *   where: {
+     *     // ... filter to delete one Translation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TranslationDeleteArgs>(args: SelectSubset<T, TranslationDeleteArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Translation.
+     * @param {TranslationUpdateArgs} args - Arguments to update one Translation.
+     * @example
+     * // Update one Translation
+     * const translation = await prisma.translation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TranslationUpdateArgs>(args: SelectSubset<T, TranslationUpdateArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Translations.
+     * @param {TranslationDeleteManyArgs} args - Arguments to filter Translations to delete.
+     * @example
+     * // Delete a few Translations
+     * const { count } = await prisma.translation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TranslationDeleteManyArgs>(args?: SelectSubset<T, TranslationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Translations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Translations
+     * const translation = await prisma.translation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TranslationUpdateManyArgs>(args: SelectSubset<T, TranslationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Translations and returns the data updated in the database.
+     * @param {TranslationUpdateManyAndReturnArgs} args - Arguments to update many Translations.
+     * @example
+     * // Update many Translations
+     * const translation = await prisma.translation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Translations and only return the `id`
+     * const translationWithIdOnly = await prisma.translation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TranslationUpdateManyAndReturnArgs>(args: SelectSubset<T, TranslationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Translation.
+     * @param {TranslationUpsertArgs} args - Arguments to update or create a Translation.
+     * @example
+     * // Update or create a Translation
+     * const translation = await prisma.translation.upsert({
+     *   create: {
+     *     // ... data to create a Translation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Translation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TranslationUpsertArgs>(args: SelectSubset<T, TranslationUpsertArgs<ExtArgs>>): Prisma__TranslationClient<$Result.GetResult<Prisma.$TranslationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Translations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationCountArgs} args - Arguments to filter Translations to count.
+     * @example
+     * // Count the number of Translations
+     * const count = await prisma.translation.count({
+     *   where: {
+     *     // ... the filter for the Translations we want to count
+     *   }
+     * })
+    **/
+    count<T extends TranslationCountArgs>(
+      args?: Subset<T, TranslationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TranslationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Translation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TranslationAggregateArgs>(args: Subset<T, TranslationAggregateArgs>): Prisma.PrismaPromise<GetTranslationAggregateType<T>>
+
+    /**
+     * Group by Translation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TranslationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TranslationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TranslationGroupByArgs['orderBy'] }
+        : { orderBy?: TranslationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TranslationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTranslationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Translation model
+   */
+  readonly fields: TranslationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Translation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TranslationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Translation model
+   */
+  interface TranslationFieldRefs {
+    readonly id: FieldRef<"Translation", 'Int'>
+    readonly locale: FieldRef<"Translation", 'String'>
+    readonly namespace: FieldRef<"Translation", 'String'>
+    readonly key: FieldRef<"Translation", 'String'>
+    readonly value: FieldRef<"Translation", 'String'>
+    readonly createdAt: FieldRef<"Translation", 'DateTime'>
+    readonly updatedAt: FieldRef<"Translation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Translation findUnique
+   */
+  export type TranslationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter, which Translation to fetch.
+     */
+    where: TranslationWhereUniqueInput
+  }
+
+  /**
+   * Translation findUniqueOrThrow
+   */
+  export type TranslationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter, which Translation to fetch.
+     */
+    where: TranslationWhereUniqueInput
+  }
+
+  /**
+   * Translation findFirst
+   */
+  export type TranslationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter, which Translation to fetch.
+     */
+    where?: TranslationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Translations to fetch.
+     */
+    orderBy?: TranslationOrderByWithRelationInput | TranslationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Translations.
+     */
+    cursor?: TranslationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Translations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Translations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Translations.
+     */
+    distinct?: TranslationScalarFieldEnum | TranslationScalarFieldEnum[]
+  }
+
+  /**
+   * Translation findFirstOrThrow
+   */
+  export type TranslationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter, which Translation to fetch.
+     */
+    where?: TranslationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Translations to fetch.
+     */
+    orderBy?: TranslationOrderByWithRelationInput | TranslationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Translations.
+     */
+    cursor?: TranslationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Translations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Translations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Translations.
+     */
+    distinct?: TranslationScalarFieldEnum | TranslationScalarFieldEnum[]
+  }
+
+  /**
+   * Translation findMany
+   */
+  export type TranslationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter, which Translations to fetch.
+     */
+    where?: TranslationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Translations to fetch.
+     */
+    orderBy?: TranslationOrderByWithRelationInput | TranslationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Translations.
+     */
+    cursor?: TranslationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Translations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Translations.
+     */
+    skip?: number
+    distinct?: TranslationScalarFieldEnum | TranslationScalarFieldEnum[]
+  }
+
+  /**
+   * Translation create
+   */
+  export type TranslationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Translation.
+     */
+    data: XOR<TranslationCreateInput, TranslationUncheckedCreateInput>
+  }
+
+  /**
+   * Translation createMany
+   */
+  export type TranslationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Translations.
+     */
+    data: TranslationCreateManyInput | TranslationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Translation createManyAndReturn
+   */
+  export type TranslationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Translations.
+     */
+    data: TranslationCreateManyInput | TranslationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Translation update
+   */
+  export type TranslationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Translation.
+     */
+    data: XOR<TranslationUpdateInput, TranslationUncheckedUpdateInput>
+    /**
+     * Choose, which Translation to update.
+     */
+    where: TranslationWhereUniqueInput
+  }
+
+  /**
+   * Translation updateMany
+   */
+  export type TranslationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Translations.
+     */
+    data: XOR<TranslationUpdateManyMutationInput, TranslationUncheckedUpdateManyInput>
+    /**
+     * Filter which Translations to update
+     */
+    where?: TranslationWhereInput
+    /**
+     * Limit how many Translations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Translation updateManyAndReturn
+   */
+  export type TranslationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * The data used to update Translations.
+     */
+    data: XOR<TranslationUpdateManyMutationInput, TranslationUncheckedUpdateManyInput>
+    /**
+     * Filter which Translations to update
+     */
+    where?: TranslationWhereInput
+    /**
+     * Limit how many Translations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Translation upsert
+   */
+  export type TranslationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Translation to update in case it exists.
+     */
+    where: TranslationWhereUniqueInput
+    /**
+     * In case the Translation found by the `where` argument doesn't exist, create a new Translation with this data.
+     */
+    create: XOR<TranslationCreateInput, TranslationUncheckedCreateInput>
+    /**
+     * In case the Translation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TranslationUpdateInput, TranslationUncheckedUpdateInput>
+  }
+
+  /**
+   * Translation delete
+   */
+  export type TranslationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+    /**
+     * Filter which Translation to delete.
+     */
+    where: TranslationWhereUniqueInput
+  }
+
+  /**
+   * Translation deleteMany
+   */
+  export type TranslationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Translations to delete
+     */
+    where?: TranslationWhereInput
+    /**
+     * Limit how many Translations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Translation without action
+   */
+  export type TranslationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Translation
+     */
+    select?: TranslationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Translation
+     */
+    omit?: TranslationOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5562,7 +6738,8 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     emailVerified: 'emailVerified',
-    image: 'image'
+    image: 'image',
+    role: 'role'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -5603,6 +6780,19 @@ export namespace Prisma {
   };
 
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+  export const TranslationScalarFieldEnum: {
+    id: 'id',
+    locale: 'locale',
+    namespace: 'namespace',
+    key: 'key',
+    value: 'value',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TranslationScalarFieldEnum = (typeof TranslationScalarFieldEnum)[keyof typeof TranslationScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5677,6 +6867,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
    * Reference to a field of type 'BigInt'
    */
   export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -5716,6 +6920,7 @@ export namespace Prisma {
     email?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
   }
@@ -5726,6 +6931,7 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    role?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
   }
@@ -5739,6 +6945,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
   }, "id" | "email">
@@ -5749,6 +6956,7 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    role?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -5765,6 +6973,7 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   }
 
   export type AccountWhereInput = {
@@ -5955,11 +7164,77 @@ export namespace Prisma {
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
+  export type TranslationWhereInput = {
+    AND?: TranslationWhereInput | TranslationWhereInput[]
+    OR?: TranslationWhereInput[]
+    NOT?: TranslationWhereInput | TranslationWhereInput[]
+    id?: IntFilter<"Translation"> | number
+    locale?: StringFilter<"Translation"> | string
+    namespace?: StringFilter<"Translation"> | string
+    key?: StringFilter<"Translation"> | string
+    value?: StringFilter<"Translation"> | string
+    createdAt?: DateTimeFilter<"Translation"> | Date | string
+    updatedAt?: DateTimeFilter<"Translation"> | Date | string
+  }
+
+  export type TranslationOrderByWithRelationInput = {
+    id?: SortOrder
+    locale?: SortOrder
+    namespace?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TranslationWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    locale_namespace_key?: TranslationLocaleNamespaceKeyCompoundUniqueInput
+    AND?: TranslationWhereInput | TranslationWhereInput[]
+    OR?: TranslationWhereInput[]
+    NOT?: TranslationWhereInput | TranslationWhereInput[]
+    locale?: StringFilter<"Translation"> | string
+    namespace?: StringFilter<"Translation"> | string
+    key?: StringFilter<"Translation"> | string
+    value?: StringFilter<"Translation"> | string
+    createdAt?: DateTimeFilter<"Translation"> | Date | string
+    updatedAt?: DateTimeFilter<"Translation"> | Date | string
+  }, "id" | "locale_namespace_key">
+
+  export type TranslationOrderByWithAggregationInput = {
+    id?: SortOrder
+    locale?: SortOrder
+    namespace?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TranslationCountOrderByAggregateInput
+    _avg?: TranslationAvgOrderByAggregateInput
+    _max?: TranslationMaxOrderByAggregateInput
+    _min?: TranslationMinOrderByAggregateInput
+    _sum?: TranslationSumOrderByAggregateInput
+  }
+
+  export type TranslationScalarWhereWithAggregatesInput = {
+    AND?: TranslationScalarWhereWithAggregatesInput | TranslationScalarWhereWithAggregatesInput[]
+    OR?: TranslationScalarWhereWithAggregatesInput[]
+    NOT?: TranslationScalarWhereWithAggregatesInput | TranslationScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Translation"> | number
+    locale?: StringWithAggregatesFilter<"Translation"> | string
+    namespace?: StringWithAggregatesFilter<"Translation"> | string
+    key?: StringWithAggregatesFilter<"Translation"> | string
+    value?: StringWithAggregatesFilter<"Translation"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Translation"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Translation"> | Date | string
+  }
+
   export type UserCreateInput = {
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
@@ -5970,6 +7245,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
@@ -5979,6 +7255,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
@@ -5989,6 +7266,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -5999,6 +7277,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
   }
 
   export type UserUpdateManyMutationInput = {
@@ -6006,6 +7285,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -6014,6 +7294,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type AccountCreateInput = {
@@ -6204,6 +7485,73 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TranslationCreateInput = {
+    locale: string
+    namespace: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TranslationUncheckedCreateInput = {
+    id?: number
+    locale: string
+    namespace: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TranslationUpdateInput = {
+    locale?: StringFieldUpdateOperationsInput | string
+    namespace?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TranslationUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    locale?: StringFieldUpdateOperationsInput | string
+    namespace?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TranslationCreateManyInput = {
+    id?: number
+    locale: string
+    namespace: string
+    key: string
+    value: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TranslationUpdateManyMutationInput = {
+    locale?: StringFieldUpdateOperationsInput | string
+    namespace?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TranslationUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    locale?: StringFieldUpdateOperationsInput | string
+    namespace?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6241,6 +7589,13 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -6272,6 +7627,7 @@ export namespace Prisma {
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    role?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -6284,6 +7640,7 @@ export namespace Prisma {
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    role?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -6292,6 +7649,7 @@ export namespace Prisma {
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    role?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -6344,6 +7702,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -6552,6 +7920,50 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type TranslationLocaleNamespaceKeyCompoundUniqueInput = {
+    locale: string
+    namespace: string
+    key: string
+  }
+
+  export type TranslationCountOrderByAggregateInput = {
+    id?: SortOrder
+    locale?: SortOrder
+    namespace?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TranslationAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type TranslationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    locale?: SortOrder
+    namespace?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TranslationMinOrderByAggregateInput = {
+    id?: SortOrder
+    locale?: SortOrder
+    namespace?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TranslationSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -6586,6 +7998,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -6732,6 +8148,13 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6799,6 +8222,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7018,6 +8451,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -7027,6 +8461,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -7051,6 +8486,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -7060,6 +8496,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -7068,6 +8505,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -7077,6 +8515,7 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    role?: $Enums.Role
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -7101,6 +8540,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -7110,6 +8550,7 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 

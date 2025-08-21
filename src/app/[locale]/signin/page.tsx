@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { signIn, providerMap, auth } from "@lib/auth"
 import { AuthError } from "next-auth"
+import { getTranslations } from "next-intl/server"
  
 const SIGNIN_ERROR_URL = "/error"
  
@@ -9,6 +10,7 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ callbackUrl?: string }>
 }) {
+  const t = await getTranslations("SignIn");
   const { callbackUrl } = await searchParams;
   const session = await auth();
   if (session?.user) {
@@ -32,7 +34,7 @@ export default async function SignInPage({
             }}
           >
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+              {t("email")}
               <input
                 name="email"
                 id="email"
@@ -42,7 +44,7 @@ export default async function SignInPage({
             </label>
             <input
               type="submit"
-              value="Send Magic Link"
+              value={t("sendMagicLink")}
               className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             />
           </form>
@@ -68,7 +70,7 @@ export default async function SignInPage({
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
                 >
-                  <span>Sign in with {provider.name}</span>
+                  <span>{t("signInWith", { provider: provider.name })}</span>
                 </button>
               </form>
             ))}
