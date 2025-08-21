@@ -13,3 +13,56 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("emailVerified")
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            Int     @map("userId")
+  type              String
+  provider          String
+  providerAccountId String  @map("providerAccountId")
+  refresh_token     String?
+  access_token      String?
+  expires_at        BigInt?
+  id_token          String?
+  scope             String?
+  session_state     String?
+  token_type        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("userId")
+  expires      DateTime
+  sessionToken String   @map("sessionToken")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_token")
+}

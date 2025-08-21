@@ -4,9 +4,12 @@ import { AuthError } from "next-auth"
  
 const SIGNIN_ERROR_URL = "/error"
  
-export default async function SignInPage(props: {
-  searchParams: { callbackUrl: string | undefined }
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>
 }) {
+  const { callbackUrl } = await searchParams;
   const session = await auth();
   if (session?.user) {
     return redirect("/");
@@ -51,7 +54,7 @@ export default async function SignInPage(props: {
                   "use server"
                   try {
                     await signIn(provider.id, {
-                      redirectTo: props.searchParams?.callbackUrl ?? "",
+                      redirectTo: callbackUrl || "",
                     })
                   } catch (error) {
                     if (error instanceof AuthError) {
