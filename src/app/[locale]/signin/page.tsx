@@ -13,9 +13,11 @@ export default async function SignInPage({
   const t = await getTranslations("SignIn");
   const { callbackUrl } = await searchParams;
   const session = await auth();
+  
   if (session?.user) {
     return redirect("/");
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-6 p-6 bg-white rounded-lg shadow">
@@ -24,7 +26,7 @@ export default async function SignInPage({
             action={async (formData) => {
               "use server"
               try {
-                await signIn("email", formData)
+                await signIn("nodemailer", formData)
               } catch (error) {
                 if (error instanceof AuthError) {
                   return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`)
@@ -48,8 +50,11 @@ export default async function SignInPage({
               className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             />
           </form>
+
           {providerMap &&
-            providerMap.map((provider) => (
+            providerMap
+              .filter(provider => provider.id !== 'nodemailer')
+              .map((provider) => (
               <form
                 key={provider.id}
                 action={async () => {
@@ -70,7 +75,7 @@ export default async function SignInPage({
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
                 >
-                  <span>{t("signInWith", { provider: provider.name })}</span>
+                  <span>{t(`signInWith${provider.name}`)}</span>
                 </button>
               </form>
             ))}

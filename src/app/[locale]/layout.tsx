@@ -1,6 +1,6 @@
-import {NextIntlClientProvider} from 'next-intl';
-import {getMessages} from 'next-intl/server';
-import {ReactNode} from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { ReactNode } from 'react';
 
 export default async function LocaleLayout({
   children,
