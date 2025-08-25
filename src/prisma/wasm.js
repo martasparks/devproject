@@ -167,6 +167,35 @@ exports.Prisma.TranslationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SliderScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  subtitle: 'subtitle',
+  description: 'description',
+  desktopImageUrl: 'desktopImageUrl',
+  desktopImageKey: 'desktopImageKey',
+  mobileImageUrl: 'mobileImageUrl',
+  mobileImageKey: 'mobileImageKey',
+  buttonText: 'buttonText',
+  buttonUrl: 'buttonUrl',
+  showContent: 'showContent',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TopBarScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  url: 'url',
+  icon: 'icon',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -191,7 +220,9 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Translation: 'Translation'
+  Translation: 'Translation',
+  Slider: 'Slider',
+  TopBar: 'TopBar'
 };
 
 /**

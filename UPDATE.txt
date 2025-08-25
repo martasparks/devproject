@@ -1,0 +1,127 @@
+2025-08-22 - Shadcn Button integrācija Header komponentē
+--------------------------------------------------------
+
+MODIFICĒTIE FAILI:
+- src/app/[locale]/components/Header.tsx - Integrēts shadcn Button
+- src/app/[locale]/components/SignOutButton.tsx - Integrēts shadcn Button
+
+2025-08-22 - Komponenšu sadalīšana un koda refaktorēšana
+--------------------------------------------------------
+
+IZVEIDOTIE FAILI:
+- src/app/[locale]/components/Header.tsx - Header komponente ar auth navigāciju
+- src/app/[locale]/components/HeroSlider.tsx - Hero sekcijas komponente
+- src/app/[locale]/components/Categories.tsx - Produktu kategoriju komponente
+- src/app/[locale]/components/FeaturedProducts.tsx - Populāro produktu komponente
+- src/app/[locale]/components/Features.tsx - Veikala funkciju komponente
+- src/app/[locale]/components/Footer.tsx - Footer komponente
+
+MODIFICĒTIE FAILI:
+- src/app/[locale]/page.tsx - Refaktorēts, lai izmantotu atsevišķās komponentes
+
+2025-08-22 - Interneta veikala sākumlapas izveidošana  
+-----------------------------------------------------
+
+MODIFICĒTIE FAILI:
+- src/app/[locale]/page.tsx - Pilnībā pārveidota sākumlapa interneta veikalam
+
+2025-08-22 - Lietotāju sadaļas izveidošana admin panelī
+-------------------------------------------------------
+
+IZVEIDOTIE FAILI:
+- src/app/admin/users/page.tsx - Lietotāju saraksts admin panelī
+
+2025-08-25 - Slider admin sadaļas izveidošana ar S3 integrāciju
+-------------------------------------------------------------
+
+IZVEIDOTIE FAILI:
+- src/lib/s3-upload.ts - Vienota S3 upload utilīta ar AWS SDK v3
+- src/app/api/admin/sliders/route.ts - API maršruti slider CRUD operācijām
+- src/app/api/admin/sliders/[id]/route.ts - API maršruti individual slider operācijām
+- src/app/admin/sliders/page.tsx - Slider saraksts admin panelī
+- src/app/admin/sliders/new/page.tsx - Jauna slider izveidošanas forma
+- src/app/admin/sliders/[id]/edit/page.tsx - Slider labošanas forma
+- src/app/admin/sliders/components/DeleteSliderButton.tsx - Slider dzēšanas komponente
+- src/app/api/sliders/active/route.ts - Publiskais API aktīvo slideru iegūšanai
+
+MODIFICĒTIE FAILI:
+- prisma/schema.prisma - Slider modelis ar desktop/mobile attēlu atbalstu
+- src/app/admin/layout.tsx - Pievienota "Slaideris" navigācijas saite
+- src/app/[locale]/components/HeroSlider.tsx - Dinamisks slider ar responsive attēliem
+- middleware.ts - Kombinēts auth un next-intl middleware (hydration mismatch fix)
+- next.config.ts - Pievienots ceļš uz i18n request konfigurāciju (hydration mismatch fix)
+
+VEIKTĀS IZMAIŅAS:
+- Izlabots hydration mismatch warning DevTools konsolē:
+  * Server renderēja ar default "en" locale, client sagaidīja "lv"
+  * Kombinēts auth un next-intl middleware pareizi
+  * API routes netiek apstrādāti ar intl middleware
+  * createNextIntlPlugin('./src/i18n/request.ts') next.config.ts failā
+
+2025-08-25 - TopBar un Header pārstrukturēšana
+-----------------------------------------------
+
+IZVEIDOTIE FAILI:
+- src/app/[locale]/components/TopBar.tsx - Augšējā josla ar lietotāja profilu un valodu pārslēdzēju
+
+MODIFICĒTIE FAILI:
+- src/app/[locale]/components/Header.tsx - Pārstrukturēts uz logo, meklēšanu un e-veikala funkcijām
+- src/app/[locale]/page.tsx - Pievienots TopBar imports un izmantošana
+- prisma/schema.prisma - Pievienots showContent lauks slider modelim (slider satura slēpšana)
+- package.json - Pievienots @heroicons/react
+
+VEIKTĀS IZMAIŅAS:
+- TopBar komponente ar pilnu funkcionalitāti:
+  * Lietotāja profila dropdown (profils, pasūtījumi, admin panelis, izlogoties)
+  * Valodu pārslēdzējs ar flag ikonām (lv/en/ru)
+  * Noklusējuma linki (Par mums, Kontakti, Piegāde)
+  * Responsīvs dizains ar dropdown menu
+- Header komponente pārstrukturēta uz e-veikala funkcijām:
+  * Logo ar saiti uz sākumlapu
+  * Centrēta meklēšanas josla (desktop/mobile)
+  * Wishlist ikona ar skaitītāju
+  * Shopping Cart ikona ar skaitītāju
+  * Heroicons integrācija
+- Slider satura slēpšanas opcija:
+  * showContent Boolean lauks datubāzē
+  * Checkbox admin formās
+  * Conditional rendering HeroSlider komponentē
+  * Admin sarakstā redzams "Rāda/Slēpts" statuss
+- Uzlaboti mobile izmēri: 1080x1920px (9:16 ratio)
+
+HEROICONS INTEGRĀCIJA:
+- UserIcon, ChevronDownIcon, CogIcon, ArrowRightOnRectangleIcon
+- ShieldCheckIcon, HeartIcon, ShoppingBagIcon, MagnifyingGlassIcon
+- HomeIcon, ChartBarIcon, DocumentTextIcon
+- Visi 24x24 outline varianti
+
+2025-08-25 - Admin TopBar un optimizācijas
+------------------------------------------
+
+IZVEIDOTIE FAILI:
+- src/app/admin/components/AdminTopBar.tsx - Admin panela augšējā josla
+
+MODIFICĒTIE FAILI:
+- src/app/admin/layout.tsx - Pievienots AdminTopBar un uzlabota sidebar navigācija
+- src/app/layout.tsx - SessionProvider ar server-side session optimizācija
+- src/app/[locale]/components/HeroSlider.tsx - Server-side data fetching optimizācija
+- src/app/[locale]/page.tsx - Slider datu iegūšana ar Prisma
+
+VEIKTĀS IZMAIŅAS:
+- AdminTopBar komponente ar admin funkcionalitāti:
+  * "Atpakaļ uz vietni" poga ar HomeIcon
+  * Admin quick links: Analītika, Iestatījumi, Atskaites
+  * Lietotāja dropdown ar admin specifiskām opcijām
+  * Tumšs dizains (bg-gray-800) kas atšķiras no publiskās daļas
+- Admin sidebar uzlabojumi:
+  * Emoji ikonas katrai sadaļai
+  * Pievienotas jaunas sadaļas: Pasūtījumi, Kategorijas
+  * Vizuāli sadalītas grupas ar border-t
+- API optimizācijas:
+  * SessionProvider ar server session eliminē /api/auth/session calls
+  * HeroSlider izmanto initialSliders prop no server-side Prisma
+  * Nav vairs client-side fetch calls uz /api/sliders/active
+  * Mazāk terminal spam ar GET requests
+- Layout struktūras uzlabojumi:
+  * Admin layout ar flex-col struktūru (TopBar + content)
+  * Publiskās daļas session optimizācija root layout līmenī

@@ -1,5 +1,6 @@
 import { signOut } from "@lib/auth";
 import { getTranslations } from "next-intl/server";
+import { Button } from "@/components/ui/button";
 
 export default async function SignOutButton() {
   const t = await getTranslations("HomePage");
@@ -11,12 +12,13 @@ export default async function SignOutButton() {
         await signOut();
       }}
     >
-      <button 
+      <Button 
         type="submit"
-        className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+        variant="outline"
+        size="sm"
       >
         {t("signOut")}
-      </button>
+      </Button>
     </form>
   );
 }
