@@ -16,7 +16,7 @@ interface AdminTopBarLink {
   id: number;
   title: string;
   url: string;
-  icon?: string;
+  icon?: string | null;
   isActive: boolean;
   order: number;
 }

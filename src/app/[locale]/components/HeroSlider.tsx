@@ -7,12 +7,12 @@ import Image from 'next/image';
 interface Slider {
   id: number;
   title: string;
-  subtitle?: string;
-  description?: string;
+  subtitle?: string | null;
+  description?: string | null;
   desktopImageUrl: string;
-  mobileImageUrl?: string;
-  buttonText?: string;
-  buttonUrl?: string;
+  mobileImageUrl?: string | null;
+  buttonText?: string | null;
+  buttonUrl?: string | null;
   showContent: boolean;
   isActive: boolean;
   order: number;

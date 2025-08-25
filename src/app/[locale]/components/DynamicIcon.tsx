@@ -9,7 +9,7 @@ interface DynamicIconProps {
 }
 
 export default function DynamicIcon({ iconName, className = "w-5 h-5" }: DynamicIconProps) {
-  const [IconComponent, setIconComponent] = useState<React.ComponentType<any> | null>(null);
+  const [IconComponent, setIconComponent] = useState<React.ComponentType<React.SVGProps<SVGSVGElement>> | null>(null);
 
   useEffect(() => {
     if (!iconName) {
@@ -18,7 +18,7 @@ export default function DynamicIcon({ iconName, className = "w-5 h-5" }: Dynamic
     }
 
     // Try to get the icon from heroicons
-    const icon = (HeroiconsOutline as any)[iconName];
+    const icon = (HeroiconsOutline as Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>>)[iconName];
     if (icon) {
       setIconComponent(() => icon);
     } else {

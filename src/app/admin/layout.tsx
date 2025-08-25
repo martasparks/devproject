@@ -49,6 +49,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link href="/admin/topbar-links" className="hover:bg-gray-800 px-3 py-2 rounded">
               🔗 TopBar Linki
             </Link>
+            <Link href="/admin/categories" className="hover:bg-gray-800 px-3 py-2 rounded">
+              📂 Kategorijas
+            </Link>
+            <Link href="/admin/settings" className="hover:bg-gray-800 px-3 py-2 rounded">
+              ⚙️ Iestatījumi
+            </Link>
             
             <div className="border-t border-gray-700 my-4"></div>
             <div className="text-xs text-gray-500 px-3 mb-2">NĀKAMIE</div>
@@ -58,12 +64,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             </div>
             <div className="px-3 py-2 text-gray-600 text-sm cursor-not-allowed">
               🛍️ Pasūtījumi (tiks pievienots)
-            </div>
-            <div className="px-3 py-2 text-gray-600 text-sm cursor-not-allowed">
-              📂 Kategorijas (tiks pievienots)
-            </div>
-            <div className="px-3 py-2 text-gray-600 text-sm cursor-not-allowed">
-              ⚙️ Iestatījumi (tiks pievienots)
             </div>
           </nav>
         </aside>

@@ -21,7 +21,7 @@ if (
   )
 }
 
-export const providers = [
+const providers = [
   Facebook({
     clientId: process.env.AUTH_FACEBOOK_ID,
     clientSecret: process.env.AUTH_FACEBOOK_SECRET,
@@ -36,9 +36,7 @@ export const providers = [
   }),
 ]
 
-export const providerMap = providers.map(({ id, name }) => ({ id, name }))
-
-export const { handlers, auth, signIn, signOut } = NextAuth(() => {
+export const { handlers, auth, signIn } = NextAuth(() => {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
   return {
