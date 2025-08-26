@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCategories } from "../contexts/CategoriesContext";
 
 interface MenuProps {
@@ -9,6 +10,8 @@ interface MenuProps {
 
 export default function Menu({ mobile = false }: MenuProps) {
   const { categories, loading } = useCategories();
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] || 'lv';
 
   if (loading) {
     return (
@@ -35,7 +38,7 @@ export default function Menu({ mobile = false }: MenuProps) {
         {categories.map((cat) => (
           <div key={cat.id} className="space-y-1">
             <Link 
-              href={`/mebeles/${cat.slug}`}
+              href={`/${currentLocale}/mebeles/${cat.slug}`}
               className="flex items-center justify-between px-4 py-3 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-all duration-200"
             >
               <span>{cat.name}</span>
@@ -51,7 +54,7 @@ export default function Menu({ mobile = false }: MenuProps) {
                 {cat.children.map((sub) => (
                   <Link 
                     key={sub.id}
-                    href={`/mebeles/${sub.slug}`}
+                    href={`/${currentLocale}/mebeles/${sub.slug}`}
                     className="flex items-center px-4 py-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-blue-50/30 rounded-lg transition-all duration-200"
                   >
                     <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mr-3"></div>
@@ -73,7 +76,7 @@ export default function Menu({ mobile = false }: MenuProps) {
         {categories.map((cat, index) => (
           <div key={cat.id} className="relative group">
             <Link 
-              href={`/mebeles/${cat.slug}`}
+              href={`/${currentLocale}/mebeles/${cat.slug}`}
               className="inline-flex items-center px-6 py-4 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all duration-200 rounded-lg mx-1 relative group"
             >
               <span className="relative z-10">{cat.name}</span>
@@ -95,7 +98,7 @@ export default function Menu({ mobile = false }: MenuProps) {
                     {cat.children.map((sub, subIndex) => (
                       <Link 
                         key={sub.id}
-                        href={`/mebeles/${sub.slug}`}
+                        href={`/${currentLocale}/mebeles/${sub.slug}`}
                         className="flex items-center px-4 py-3 text-sm text-slate-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 rounded-lg transition-all duration-200 group/sub"
                       >
                         <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full mr-3 opacity-60 group-hover/sub:opacity-100 transition-opacity duration-200"></div>

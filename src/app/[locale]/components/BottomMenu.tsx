@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   HomeIcon, 
   UserIcon, 
@@ -13,11 +14,14 @@ import {
   ArrowLeftEndOnRectangleIcon
 } from '@heroicons/react/24/outline';
 import MobileOffcanvas from './MobileOffcanvas';
+import { SignInModal } from '@/components/signin-modal';
 
 export default function BottomMenu() {
   const { data: session } = useSession();
   const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] || 'lv';
 
   const handleSignOut = async () => {
     const { signOut } = await import('next-auth/react');
@@ -29,19 +33,19 @@ export default function BottomMenu() {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-30">
         <div className="grid grid-cols-5 py-2">
           {/* Home */}
-          <Link href="/" className="flex flex-col items-center py-2 px-1">
+          <Link href={`/${currentLocale}`} className="flex flex-col items-center py-2 px-1">
             <HomeIcon className="w-6 h-6 text-gray-600" />
             <span className="text-xs text-gray-600 mt-1">Sākums</span>
           </Link>
 
           {/* Wishlist */}
-          <Link href="/wishlist" className="flex flex-col items-center py-2 px-1">
+          <Link href={`/${currentLocale}/wishlist`} className="flex flex-col items-center py-2 px-1">
             <HeartIcon className="w-6 h-6 text-gray-600" />
             <span className="text-xs text-gray-600 mt-1">Vēlmes</span>
           </Link>
 
           {/* Cart */}
-          <Link href="/cart" className="flex flex-col items-center py-2 px-1">
+          <Link href={`/${currentLocale}/cart`} className="flex flex-col items-center py-2 px-1">
             <ShoppingBagIcon className="w-6 h-6 text-gray-600" />
             <span className="text-xs text-gray-600 mt-1">Grozs</span>
           </Link>
@@ -65,10 +69,12 @@ export default function BottomMenu() {
                 <span className="text-xs text-gray-600 mt-1">Profils</span>
               </button>
             ) : (
-              <Link href="/signin" className="flex flex-col items-center py-2 px-1">
-                <UserIcon className="w-6 h-6 text-gray-600" />
-                <span className="text-xs text-gray-600 mt-1">Ieiet</span>
-              </Link>
+              <SignInModal currentLocale={currentLocale}>
+                <div className="flex flex-col items-center py-2 px-1">
+                  <UserIcon className="w-6 h-6 text-gray-600" />
+                  <span className="text-xs text-gray-600 mt-1">Ieiet</span>
+                </div>
+              </SignInModal>
             )}
 
             {/* Profile Menu */}
@@ -88,7 +94,7 @@ export default function BottomMenu() {
                     </div>
                     
                     <Link
-                      href="/profile"
+                      href={`/${currentLocale}/profile`}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setShowProfileMenu(false)}
                     >
@@ -97,7 +103,7 @@ export default function BottomMenu() {
                     </Link>
                     
                     <Link
-                      href="/orders"
+                      href={`/${currentLocale}/orders`}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setShowProfileMenu(false)}
                     >
@@ -107,7 +113,7 @@ export default function BottomMenu() {
                     
                     {session.user.role === 'ADMIN' && (
                       <Link
-                        href="/admin"
+                        href={`/${currentLocale}/admin`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowProfileMenu(false)}
                       >

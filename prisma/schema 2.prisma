@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("emailVerified")
+  image         String?
+
+  role          Role     @default(CUSTOMER)
+
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            Int     @map("userId")
+  type              String
+  provider          String
+  providerAccountId String  @map("providerAccountId")
+  refresh_token     String?
+  access_token      String?
+  expires_at        BigInt?
+  id_token          String?
+  scope             String?
+  session_state     String?
+  token_type        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("userId")
+  expires      DateTime
+  sessionToken String   @map("sessionToken")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_token")
+}
+
+model Translation {
+  id        Int      @id @default(autoincrement())
+  locale    String   
+  namespace String   
+  key       String   
+  value     String   
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([locale, namespace, key])
+}
+
+model Slider {
+  id             Int      @id @default(autoincrement())
+  title          String
+  subtitle       String?
+  description    String?
+  desktopImageUrl String
+  desktopImageKey String
+  mobileImageUrl String?
+  mobileImageKey String?
+  buttonText     String?
+  buttonUrl      String?
+  showContent    Boolean  @default(true)
+  isActive       Boolean  @default(true)
+  order          Int      @default(0)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model TopBar {
+  id        Int      @id @default(autoincrement())
+  title     String
+  url       String
+  icon      String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  parentId    String?     
+  parent      Category?   @relation("Subcategories", fields: [parentId], references: [id])
+  children    Category[]  @relation("Subcategories")
+  products    Product[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  imageUrl  String?
+  imageKey  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StockStatus {
+  IN_STOCK
+  OUT_OF_STOCK
+  LOW_STOCK
+  PRE_ORDER
+}
+
+model ProductBrand {
+  id             String    @id @default(cuid())
+  brandCode      String    @unique  // e.g., "GOO", "FB", "APPL"
+  name           String
+  slug           String    @unique
+  logoUrl        String?
+  description    String?
+  isActive       Boolean   @default(true)
+  nextProductNum Int       @default(1)  // Next product number for this brand
+  
+  products       Product[]
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([brandCode])
+  @@index([isActive])
+}
+
+model Product {
+  id                    String      @id @default(cuid())
+  productCode           String      @unique
+  name                  String
+  slug                  String      @unique
+  shortDescription      String?
+  fullDescription       String?     @db.Text
+  price                 Decimal     @db.Decimal(10, 2)
+  salePrice            Decimal?     @db.Decimal(10, 2)
+  stockQuantity        Int         @default(0)
+  stockStatus          StockStatus @default(IN_STOCK)
+  
+  // Dimensions
+  width                Decimal?    @db.Decimal(8, 2)
+  depth                Decimal?    @db.Decimal(8, 2)
+  height               Decimal?    @db.Decimal(8, 2)
+  weight               Decimal?    @db.Decimal(8, 2)
+  
+  // Relations
+  brandId              String?
+  brand                ProductBrand? @relation(fields: [brandId], references: [id])
+  categoryId           String
+  category             Category    @relation(fields: [categoryId], references: [id])
+  
+  // Main image
+  mainImageUrl         String?
+  mainImageKey         String?
+  
+  // Additional images - separate table
+  images               ProductImage[]
+  
+  // SEO
+  metaTitle            String?
+  metaDescription      String?
+  
+  // Status
+  isActive             Boolean     @default(true)
+  
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([isActive])
+  @@index([stockStatus])
+  @@index([price])
+  @@index([createdAt])
+}
+
+model ProductImage {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  imageUrl    String
+  imageKey    String?
+  altText     String?
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+  @@index([order])
+  @@index([isActive])
+}

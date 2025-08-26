@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 interface DeleteCategoryButtonProps {
   categoryId: string;
@@ -16,9 +19,10 @@ export default function DeleteCategoryButton({ categoryId, categoryName, hasChil
 
   if (hasChildren) {
     return (
-      <span className="text-gray-400 text-sm">
+      <Button variant="outline" size="sm" disabled>
+        <TrashIcon className="w-4 h-4" />
         Nav dzēšams
-      </span>
+      </Button>
     );
   }
 
@@ -35,10 +39,23 @@ export default function DeleteCategoryButton({ categoryId, categoryName, hasChil
         throw new Error(error.error || 'Failed to delete category');
       }
 
+      toast.success('Kategorija veiksmīgi dzēsta!', {
+        duration: 3000,
+        icon: '🗑️',
+      });
+
       router.refresh();
     } catch (error) {
       console.error('Error deleting category:', error);
-      alert('Kļūda dzēšot kategoriju. Lūdzu mēģiniet vēlreiz.');
+      toast.error(
+        error instanceof Error 
+          ? error.message 
+          : 'Kļūda dzēšot kategoriju. Lūdzu mēģiniet vēlreiz.',
+        {
+          duration: 5000,
+          icon: '❌',
+        }
+      );
     } finally {
       setIsDeleting(false);
       setShowConfirm(false);
@@ -47,13 +64,15 @@ export default function DeleteCategoryButton({ categoryId, categoryName, hasChil
 
   return (
     <>
-      <button
+      <Button 
+        variant="destructive" 
+        size="sm"
         onClick={() => setShowConfirm(true)}
-        className="text-red-600 hover:text-red-900"
         disabled={isDeleting}
       >
+        <TrashIcon className="w-4 h-4" />
         {isDeleting ? 'Dzēš...' : 'Dzēst'}
-      </button>
+      </Button>
 
       {showConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -66,20 +85,20 @@ export default function DeleteCategoryButton({ categoryId, categoryName, hasChil
               Šo darbību nevar atsaukt.
             </p>
             <div className="flex justify-end space-x-3">
-              <button
+              <Button
+                variant="outline"
                 onClick={() => setShowConfirm(false)}
-                className="px-4 py-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
                 disabled={isDeleting}
               >
                 Atcelt
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="destructive"
                 onClick={handleDelete}
-                className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700 disabled:opacity-50"
                 disabled={isDeleting}
               >
                 {isDeleting ? 'Dzēš...' : 'Dzēst'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

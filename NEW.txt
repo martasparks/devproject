@@ -1,0 +1,41 @@
+https://floreres.com/wp-admin
+Pieslēdzies ar profila datiem, epasts/parole.
+
+PRODUKTI:
+
+Kreisajā sānā izvēlne → atrodi sadaļu Produkti (Products).
+ Atvērsies produktu saraksts – te redzēsi visus pievienotos produktus.
+
+Atrodi produktu sarakstā vajadzīgo produktu → uzbrauc ar peli uz tā nosaukuma.
+ Tur parādīsies vairākas iespējas, Tev jāizvēlas Rediģēt (Edit).
+
+Pats pirmais lauks - Preces nosaukums.
+Pēc tam Product description (Pilnais preces apraksts).
+Patinot zemāk - atradīsi sadaļu Products data (Šeit ir visa galvenā informācija par produktu).
+Pirmajā logā (General) redzēsi uzreiz Regular price/Sale price - cenas šeit norādam jau ar iekļautu PVN.
+Otrajā logā (Inventory) var ierakstīt preces kodu, ieķeksējot "Track stock quantity for this product", varēsi ierakstīt cik daudz preces ir uz vietas.
+Trešajā logā (Shipping) var pievienot preces iepakojuma izmērus.
+Ceturtajā logā (Linked Products) vari pievienot saistītās preces.
+Piektajā logā (Attributes) var pievienot atribūtus, kā: Tilpums un citus. Šobrīd tur ir tikai Tilpums, bet blakus ir poga "Add new", lai pievienotu arī citus, kas nepieciešami.
+Advanced logā vari attiecīgajam produktam pievienot īpašu ziņu. Piemēram: šis produkts nav paredzēts jūtīgai ādai u.t.t.
+Additional logā var pievienot Video, Custom badge.
+Specifications logs jau pēc nosaukma ir skaidrs.
+
+Pašā apakšā būs Product short description - šis parādās tieši zem cenas produkta lapā.
+
+Šajā pašā Edit lapā, labajā malā ir Product Image (Galvenā bilde), uzreiz zemāk ir Product gallery (Papildbildes).
+
+Tas arī viss šajā lapā. Visus augstāk minētos logus var testēt - ieraksti kādu info un atjauno produkta lapu, lai redzētu, kur tas parādās, kā tas izskatās un tā tālāk, neko tur sabojāt īsti nevar.
+
+TULKOŠANA:
+
+Atver jebkuru lapu - kā piemēru paņemsim šo: https://floreres.com/cosmetics/cosmetics/your-moisture-silky-eye-cream/ - kad atvērsi lapu, augšā ir melns Menu, tur spied Translate Page.
+Tagad atvērās tulkošanas sistēma un kreisajā malā rāda mājas lapu.
+Izvēlies jebkuru tekstu labajā malā.
+ Parādīsies zils zīmulītis.
+  Spied uz tā zīmulīša.
+   Kreisajā malā parādīsies jauni lauki: From English un To Latvian.
+    Šeit visam jābūt skaidram, From English ir oriģinālai teksts, zemāk laukā To Latvian ieraksti tulkojumu, kā vēlies, lai to rāda Latviešu valodā.
+Ja gadījumā ir kāds teksts, kuram To English/To Latvian ir tukšs tulkojums, tad nokopē visu tieši tā, kā ir laukā From Original String augstāk un iekopē attiecīgajā valodā un iztulko.
+SVARīGI: Ja tur tekstā piemēram ir: %s item(s) left in stock. < Procenta zīme tekstam pa vidu vai jebkurā citā vietā, tātad, tai jābūt arī tulkojumā. Tulkojam tikai vārdus, visus papildus simbolus atstājam kā ir. Un šādā veidā var iztulkot pilnīgi visu mājas lapu. Preces aprakstu ierakstam angļu valodā, tad ieejam tajā precē, paņemam Translate Page un iztulkojam aprakstu.
+Kā arī, ja lapā ir vairāki tulkojumi, labāk pēc katra iztulkotā teksta  saglabājam tulkojumu (Augšā ir zila Save poga).

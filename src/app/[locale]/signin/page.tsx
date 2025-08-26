@@ -10,7 +10,7 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ callbackUrl?: string }>
 }) {
-  const t = await getTranslations("SignIn");
+  const t = await getTranslations("TestPage");
   const { callbackUrl } = await searchParams;
   const session = await auth();
   
@@ -36,7 +36,7 @@ export default async function SignInPage({
             }}
           >
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              {t("email")}
+              {t('email', { default: 'E-pasts' })}
               <input
                 name="email"
                 id="email"

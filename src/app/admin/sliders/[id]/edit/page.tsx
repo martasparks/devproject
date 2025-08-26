@@ -3,6 +3,12 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon } from '@heroicons/react/24/outline';
 
 interface Slider {
   id: number;
@@ -23,8 +29,9 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
   const router = useRouter();
   const [slider, setSlider] = useState<Slider | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [fetchError, setFetchError] = useState('');
+  const [desktopImagePreview, setDesktopImagePreview] = useState<string | null>(null);
+  const [mobileImagePreview, setMobileImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSlider();
@@ -41,13 +48,28 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
     } catch (error) {
       console.error('Error fetching slider:', error);
       setFetchError('Failed to load slider');
+      toast.error('Kļūda ielādējot slaidu', {
+        duration: 5000,
+        icon: '❌',
+      });
     }
+  };
+
+  const handleImagePreview = (file: File, type: 'desktop' | 'mobile') => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (type === 'desktop') {
+        setDesktopImagePreview(reader.result as string);
+      } else {
+        setMobileImagePreview(reader.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
 
     const formData = new FormData(e.currentTarget);
 
@@ -62,10 +84,23 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
         throw new Error(errorData.error || 'Failed to update slider');
       }
 
+      toast.success('Slaids veiksmīgi atjaunināts!', {
+        duration: 3000,
+        icon: '✅',
+      });
+
       router.push('/admin/sliders');
     } catch (error) {
       console.error('Error updating slider:', error);
-      setError(error instanceof Error ? error.message : 'Unknown error occurred');
+      toast.error(
+        error instanceof Error 
+          ? error.message 
+          : 'Kļūda atjauninot slaidu. Lūdzu mēģiniet vēlreiz.',
+        {
+          duration: 5000,
+          icon: '❌',
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -73,185 +108,234 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
 
   if (fetchError) {
     return (
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Kļūda</h1>
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <p className="text-red-800">{fetchError}</p>
+      <div className="min-h-[600px] flex flex-col items-center justify-center space-y-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+          <span className="text-red-600 text-2xl">❌</span>
         </div>
-        <Link
-          href="/admin/sliders"
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 inline-block"
-        >
-          Atpakaļ uz slaidiem
-        </Link>
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-semibold text-gray-900">Kļūda ielādējot slaidu</h2>
+          <p className="text-gray-600 max-w-md">{fetchError}</p>
+        </div>
+        <Button asChild>
+          <Link href="/admin/sliders">
+            Atpakaļ uz slaidiem
+          </Link>
+        </Button>
       </div>
     );
   }
 
   if (!slider) {
     return (
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Ielādē...</h1>
+      <div className="min-h-[600px] flex flex-col items-center justify-center space-y-6">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <h2 className="text-xl font-medium text-gray-900">Ielādē slaidu...</h2>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Labot slaidu</h1>
-        <Link
-          href="/admin/sliders"
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-        >
-          Atpakaļ
-        </Link>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center space-x-4">
+        <Button variant="outline" size="icon" asChild>
+          <Link href="/admin/sliders">
+            <ArrowLeftIcon className="w-4 h-4" />
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Rediģēt slaidu</h1>
+          <p className="text-gray-600 mt-1">
+            Atjauniniet slaida informāciju un attēlus
+          </p>
+        </div>
       </div>
-
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-red-800">{error}</p>
+      
+      {/* Form */}
+      <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 className="text-lg font-medium text-gray-900">Slaida informācija</h2>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="title">Virsraksts *</Label>
+              <Input
+                type="text"
+                name="title"
+                id="title"
+                required
+                defaultValue={slider.title}
+                placeholder="Slaida virsraksts"
+              />
             </div>
-          )}
 
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-              Virsraksts *
-            </label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              defaultValue={slider.title}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+            <div className="space-y-2">
+              <Label htmlFor="subtitle">Apakšvirsraksts</Label>
+              <Input
+                type="text"
+                name="subtitle"
+                id="subtitle"
+                defaultValue={slider.subtitle || ''}
+                placeholder="Slaida apakšvirsraksts"
+              />
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700">
-              Apakšvirsraksts
-            </label>
-            <input
-              type="text"
-              name="subtitle"
-              id="subtitle"
-              defaultValue={slider.subtitle || ''}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-              Apraksts
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="description">Apraksts</Label>
+            <Textarea
               name="description"
               id="description"
               rows={4}
               defaultValue={slider.description || ''}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              placeholder="Slaida apraksts"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Pašreizējā desktop bilde
-            </label>
-            <div className="mt-2 mb-4">
-              <img 
-                src={slider.desktopImageUrl} 
-                alt={slider.title}
-                className="h-32 w-48 object-cover rounded-lg border"
-              />
-            </div>
-            <label htmlFor="desktopImage" className="block text-sm font-medium text-gray-700">
-              Jauna desktop bilde (atstāj tukšu, ja nevēlies mainīt)
-            </label>
-            <input
-              type="file"
-              name="desktopImage"
-              id="desktopImage"
-              accept="image/*"
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            <p className="mt-1 text-sm text-gray-500">Ieteicamie izmēri: 1920x1080px</p>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Pašreizējā mobile bilde
-            </label>
-            <div className="mt-2 mb-4">
-              {slider.mobileImageUrl ? (
+          {/* Desktop Image */}
+          <div className="space-y-3">
+            <Label>Desktop attēls</Label>
+            
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-2">Pašreizējais attēls:</p>
                 <img 
-                  src={slider.mobileImageUrl} 
-                  alt={`${slider.title} - mobile`}
-                  className="h-32 w-24 object-cover rounded-lg border"
+                  src={slider.desktopImageUrl} 
+                  alt={slider.title}
+                  className="w-full max-w-md h-32 object-cover rounded-lg border border-gray-200"
                 />
-              ) : (
-                <div className="h-32 w-24 bg-gray-100 rounded-lg border flex items-center justify-center text-gray-500 text-sm">
-                  Nav mobile bildes
+              </div>
+              
+              <div className="flex items-center justify-center w-full">
+                <label htmlFor="desktopImage" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <PhotoIcon className="w-8 h-8 mb-4 text-gray-500" />
+                    <p className="mb-2 text-sm text-gray-500">
+                      <span className="font-semibold">Jauns desktop attēls (1920x1080px)</span>
+                    </p>
+                    <p className="text-xs text-gray-500">Atstāj tukšu, ja nevēlies mainīt</p>
+                  </div>
+                  <input
+                    id="desktopImage"
+                    type="file"
+                    name="desktopImage"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImagePreview(file, 'desktop');
+                    }}
+                  />
+                </label>
+              </div>
+              {desktopImagePreview && (
+                <div className="relative">
+                  <img
+                    src={desktopImagePreview}
+                    alt="Desktop preview"
+                    className="w-full max-w-md h-32 object-cover rounded-lg border border-gray-200"
+                  />
+                  <p className="text-sm text-gray-600 mt-1">Jaunais desktop attēla priekšskatījums</p>
                 </div>
               )}
             </div>
-            <label htmlFor="mobileImage" className="block text-sm font-medium text-gray-700">
-              Jauna mobile bilde (nav obligāti)
-            </label>
-            <input
-              type="file"
-              name="mobileImage"
-              id="mobileImage"
-              accept="image/*"
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            <p className="mt-1 text-sm text-gray-500">Ieteicamie izmēri: 1080x1920px (9:16 ratio). Ja nav norādīta, tiks izmantota desktop bilde.</p>
           </div>
 
-          <div>
-            <label htmlFor="buttonText" className="block text-sm font-medium text-gray-700">
-              Pogas teksts
-            </label>
-            <input
-              type="text"
-              name="buttonText"
-              id="buttonText"
-              defaultValue={slider.buttonText || ''}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+          {/* Mobile Image */}
+          <div className="space-y-3">
+            <Label>Mobile attēls (izvēles)</Label>
+            
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium text-gray-700 mb-2">Pašreizējais mobile attēls:</p>
+                {slider.mobileImageUrl ? (
+                  <img 
+                    src={slider.mobileImageUrl} 
+                    alt={`${slider.title} - mobile`}
+                    className="w-48 h-32 object-cover rounded-lg border border-gray-200"
+                  />
+                ) : (
+                  <div className="w-48 h-32 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 text-sm">
+                    Nav mobile attēla
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex items-center justify-center w-full">
+                <label htmlFor="mobileImage" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <PhotoIcon className="w-8 h-8 mb-4 text-gray-500" />
+                    <p className="mb-2 text-sm text-gray-500">
+                      <span className="font-semibold">Jauns mobile attēls (1080x1350px)</span>
+                    </p>
+                    <p className="text-xs text-gray-500">Nav obligāts</p>
+                  </div>
+                  <input
+                    id="mobileImage"
+                    type="file"
+                    name="mobileImage"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImagePreview(file, 'mobile');
+                    }}
+                  />
+                </label>
+              </div>
+              {mobileImagePreview && (
+                <div className="relative">
+                  <img
+                    src={mobileImagePreview}
+                    alt="Mobile preview"
+                    className="w-48 h-32 object-cover rounded-lg border border-gray-200"
+                  />
+                  <p className="text-sm text-gray-600 mt-1">Jaunais mobile attēla priekšskatījums</p>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="buttonUrl" className="block text-sm font-medium text-gray-700">
-              Pogas saite
-            </label>
-            <input
-              type="url"
-              name="buttonUrl"
-              id="buttonUrl"
-              defaultValue={slider.buttonUrl || ''}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="buttonText">Pogas teksts</Label>
+              <Input
+                type="text"
+                name="buttonText"
+                id="buttonText"
+                defaultValue={slider.buttonText || ''}
+                placeholder="Uzzināt vairāk"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="buttonUrl">Pogas saite</Label>
+              <Input
+                type="url"
+                name="buttonUrl"
+                id="buttonUrl"
+                defaultValue={slider.buttonUrl || ''}
+                placeholder="https://example.com"
+              />
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="order" className="block text-sm font-medium text-gray-700">
-              Kārtība
-            </label>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="order">Kārtība</Label>
+            <Input
               type="number"
               name="order"
               id="order"
               defaultValue={slider.order}
               min="0"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="max-w-32"
             />
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 name="showContent"
@@ -259,12 +343,10 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
                 defaultChecked={slider.showContent}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="showContent" className="ml-2 block text-sm text-gray-900">
-                Rādīt teksta saturu (virsraksts, apraksts, poga)
-              </label>
+              <Label htmlFor="showContent">Rādīt teksta saturu (virsraksts, apraksts, poga)</Label>
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
                 name="isActive"
@@ -272,28 +354,48 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
                 defaultChecked={slider.isActive}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">
-                Slaids ir aktīvs
-              </label>
+              <Label htmlFor="isActive">Slaids ir aktīvs</Label>
             </div>
           </div>
 
-          <div className="flex justify-end space-x-3">
-            <Link
-              href="/admin/sliders"
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-            >
-              Atcelt
-            </Link>
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+          <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+            <Button variant="outline" asChild>
+              <Link href="/admin/sliders">
+                Atcelt
+              </Link>
+            </Button>
+            <Button type="submit" disabled={loading}>
+              <CheckIcon className="w-4 h-4" />
               {loading ? 'Saglabā...' : 'Saglabāt izmaiņas'}
-            </button>
+            </Button>
           </div>
         </form>
+      </div>
+      
+      {/* Tips Card */}
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div className="flex items-start space-x-3">
+          <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <LightBulbIcon className="w-5 h-5 text-yellow-600" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-yellow-900 mb-2">Noderīgi padomi</h4>
+            <ul className="text-yellow-800 text-sm space-y-2">
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Ja nepievienojat jaunu attēlu, saglabāsies esošais</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Izmēri paliek tie paši: Desktop 1920x1080px, Mobile 1080x1350px</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Atjauniniet tikai nepieciešamos laukus</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

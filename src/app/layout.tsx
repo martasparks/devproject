@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@lib/auth";
 import prisma from "@lib/prisma";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 async function getSettings() {
   try {
@@ -52,12 +42,42 @@ export default async function RootLayout({
 
   return (
     <html suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
         suppressHydrationWarning
       >
         <SessionProvider session={session}>
           {children}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                style: {
+                  background: '#10b981',
+                },
+              },
+              error: {
+                duration: 5000,
+                style: {
+                  background: '#ef4444',
+                },
+              },
+            }}
+          />
         </SessionProvider>
       </body>
     </html>

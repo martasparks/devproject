@@ -36,6 +36,11 @@ const providers = [
   }),
 ]
 
+export const providerMap = providers.map((provider) => ({
+  id: provider.id,
+  name: provider.name,
+}))
+
 export const { handlers, auth, signIn } = NextAuth(() => {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 

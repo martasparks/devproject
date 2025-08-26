@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import prisma from '@lib/prisma';
+import { useEffect, useState } from 'react';
 import DynamicIcon from './DynamicIcon';
 
 interface TopBarLink {
@@ -11,14 +13,35 @@ interface TopBarLink {
   order: number;
 }
 
-export default async function TopBarLinks() {
-  const links = await prisma.topBar.findMany({
-    where: { isActive: true },
-    orderBy: [
-      { order: 'asc' },
-      { createdAt: 'desc' }
-    ]
-  });
+export default function TopBarLinks() {
+  const [links, setLinks] = useState<TopBarLink[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      try {
+        const response = await fetch('/api/topbar-links');
+        const data = await response.json();
+        setLinks(data.links || []);
+      } catch (error) {
+        console.error('Error fetching topbar links:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLinks();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex space-x-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div key={index} className="h-4 w-16 bg-gray-200 animate-pulse rounded"></div>
+        ))}
+      </div>
+    );
+  }
 
   if (links.length === 0) {
     return null;

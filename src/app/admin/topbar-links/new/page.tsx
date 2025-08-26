@@ -9,13 +9,5 @@ export default async function NewTopBarLinkPage() {
     redirect("/");
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Pievienot jaunu TopBar linku</h1>
-      </div>
-
-      <TopBarLinkForm />
-    </div>
-  );
+  return <TopBarLinkForm />;
 }

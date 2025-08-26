@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCategories } from "../contexts/CategoriesContext";
 
 // Default category icons for fallback
@@ -9,6 +10,8 @@ const defaultCategoryIcons = ["📱", "👕", "🏠", "⚽", "📚", "💄", "�
 export default function Categories() {
   const { categories: allCategories, loading } = useCategories();
   const categories = allCategories.slice(0, 6); // Show only first 6 categories
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] || 'lv';
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4">
@@ -27,7 +30,7 @@ export default function Categories() {
             categories.map((category, index) => (
               <Link 
                 key={category.id} 
-                href={`/mebeles/${category.slug}`}
+                href={`/${currentLocale}/mebeles/${category.slug}`}
                 className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow cursor-pointer block"
               >
                 <div className="text-4xl mb-4">

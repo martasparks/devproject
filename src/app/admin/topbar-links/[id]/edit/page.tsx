@@ -24,15 +24,9 @@ export default async function EditTopBarLinkPage({ params }: EditTopBarLinkPageP
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Labot TopBar linku</h1>
-      </div>
-
-      <TopBarLinkForm 
-        initialData={link}
-        isEditing={true}
-      />
-    </div>
+    <TopBarLinkForm 
+      initialData={link}
+      isEditing={true}
+    />
   );
 }

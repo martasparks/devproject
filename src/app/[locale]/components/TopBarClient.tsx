@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { ChevronDownIcon, UserIcon, CogIcon, ArrowLeftEndOnRectangleIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from 'next-intl';
+import { SignInModal } from '@/components/signin-modal';
 
 const languages = [
   { code: 'lv', name: 'Latviešu', flag: '🇱🇻' },
@@ -17,6 +19,7 @@ interface TopBarClientProps {
 }
 
 export default function TopBarClient({ children }: TopBarClientProps) {
+  const t = useTranslations('TopBar'); // Pievienojiet tulkojumus
   const { data: session } = useSession();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -43,14 +46,29 @@ export default function TopBarClient({ children }: TopBarClientProps) {
   }, []);
 
   const handleLanguageChange = (langCode: string) => {
-    const newPath = pathname.replace(`/${currentLocale}`, `/${langCode}`);
+    // Uzlabota valodu maiņas loģika
+    const segments = pathname.split('/');
+    
+    // Ja pašreizējais locale ir URL pirmajā segmentā
+    if (languages.some(lang => lang.code === segments[1])) {
+      segments[1] = langCode;
+    } else {
+      // Ja nav locale URL, pievienojiet jauno locale
+      segments.splice(1, 0, langCode);
+    }
+    
+    const newPath = segments.join('/') || '/';
+    
+    console.log('Current pathname:', pathname);
+    console.log('New path:', newPath);
+    
     router.push(newPath);
     setIsLangMenuOpen(false);
   };
 
   const handleSignOut = async () => {
     const { signOut } = await import('next-auth/react');
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: `/${currentLocale}` });
   };
 
   return (
@@ -68,6 +86,7 @@ export default function TopBarClient({ children }: TopBarClientProps) {
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 transition-colors"
+                aria-label={t('languageSelector', { default: 'Valodas izvēle' })}
               >
                 <span>{currentLang.flag}</span>
                 <span>{currentLang.code.toUpperCase()}</span>
@@ -81,7 +100,7 @@ export default function TopBarClient({ children }: TopBarClientProps) {
                       <button
                         key={lang.code}
                         onClick={() => handleLanguageChange(lang.code)}
-                        className={`w-full text-left px-4 py-2 text-sm flex items-center space-x-2 hover:bg-gray-100 ${
+                        className={`w-full text-left px-4 py-2 text-sm flex items-center space-x-2 hover:bg-gray-100 transition-colors ${
                           lang.code === currentLocale ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
                         }`}
                       >
@@ -99,6 +118,7 @@ export default function TopBarClient({ children }: TopBarClientProps) {
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  aria-label={t('userMenu', { default: 'Lietotāja izvēlne' })}
                 >
                   {session.user.image ? (
                     <img
@@ -119,29 +139,29 @@ export default function TopBarClient({ children }: TopBarClientProps) {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
                       <Link
-                        href="/profile"
+                        href={`/${currentLocale}/profile`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         <UserIcon className="w-4 h-4 mr-3" />
-                        Mans profils
+                        {t('profile', { default: 'Mans profils' })}
                       </Link>
                       <Link
-                        href="/orders"
+                        href={`/${currentLocale}/orders`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         <CogIcon className="w-4 h-4 mr-3" />
-                        Mani pasūtījumi
+                        {t('orders', { default: 'Mani pasūtījumi' })}
                       </Link>
                       {session.user.role === 'ADMIN' && (
                         <Link
-                          href="/admin"
+                          href={`/admin`}
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <ShieldCheckIcon className="w-4 h-4 mr-3" />
-                          Admin panelis
+                          {t('adminPanel', { default: 'Admin panelis' })}
                         </Link>
                       )}
                       <div className="border-t border-gray-100"></div>
@@ -150,28 +170,18 @@ export default function TopBarClient({ children }: TopBarClientProps) {
                         className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <ArrowLeftEndOnRectangleIcon className="w-4 h-4 mr-3" />
-                        Izlogoties
+                        {t('signOut', { default: 'Izlogoties' })}
                       </button>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
-                <Link
-                  href="/signin"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Ielogoties
-                </Link>
-                <span className="text-gray-400">|</span>
-                <Link
-                  href="/register"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Reģistrēties
-                </Link>
-              </div>
+              <SignInModal currentLocale={currentLocale}>
+                <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                  {t('signIn', { default: 'Ielogoties' })}
+                </button>
+              </SignInModal>
             )}
           </div>
         </div>

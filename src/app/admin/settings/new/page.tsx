@@ -9,13 +9,5 @@ export default async function NewSettingPage() {
     redirect("/");
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Pievienot jaunu iestatījumu</h1>
-      </div>
-
-      <SettingForm />
-    </div>
-  );
+  return <SettingForm />;
 }

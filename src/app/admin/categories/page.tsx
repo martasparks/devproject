@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import prisma from "@lib/prisma";
 import DeleteCategoryButton from "./components/DeleteCategoryButton";
+import { Button } from '@/components/ui/button';
+import { PlusIcon, PencilIcon, FolderIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default async function CategoriesPage() {
   const session = await auth();
@@ -23,72 +25,202 @@ export default async function CategoriesPage() {
   const mainCategories = categories.filter(cat => !cat.parentId);
   const subcategories = categories.filter(cat => cat.parentId);
 
+  if (!categories || categories.length === 0) {
+    return (
+      <div className="min-h-[600px] flex flex-col items-center justify-center space-y-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+          <FolderIcon className="w-8 h-8 text-gray-400" />
+        </div>
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-semibold text-gray-900">Nav atrastas kategorijas</h2>
+          <p className="text-gray-600 max-w-md">
+            Sāciet, pievienojot pirmo kategoriju savai aplikācijai. Kategorijas palīdz organizēt produktus un saturu.
+          </p>
+        </div>
+        <Button asChild size="lg">
+          <Link href="/admin/categories/new">
+            <PlusIcon className="w-4 h-4" />
+            Pievienot jaunu kategoriju
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Kategorijas</h1>
-        <Link 
-          href="/admin/categories/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Pievienot jaunu
-        </Link>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Kategorijas</h1>
+          <p className="text-gray-600 mt-1">
+            Pārvaldiet produktu kategorijas un apakškategorijas
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/admin/categories/new">
+            <PlusIcon className="w-4 h-4" />
+            Pievienot jaunu
+          </Link>
+        </Button>
       </div>
 
-      {categories.length === 0 ? (
-        <div className="text-center py-10">
-          <h2 className="text-2xl font-bold text-gray-500">Nav atrasta neviena kategorija</h2>
-          <Link 
-            href="/admin/categories/new"
-            className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Pievienot pirmo kategoriju
-          </Link>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {/* Main Categories */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Galvenās kategorijas</h3>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <FolderIcon className="w-5 h-5 text-blue-600" />
             </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Kopā kategorijas</p>
+              <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+              <FolderIcon className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Galvenās kategorijas</p>
+              <p className="text-2xl font-bold text-gray-900">{mainCategories.length}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+              <ArrowRightIcon className="w-5 h-5 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Apakškategorijas</p>
+              <p className="text-2xl font-bold text-gray-900">{subcategories.length}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tables */}
+      <div className="space-y-6">
+        {/* Main Categories */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h3 className="text-lg font-medium text-gray-900">Galvenās kategorijas</h3>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nosaukums
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    URL Slug
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Apakškategorijas
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Darbības
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {mainCategories.map((category) => (
+                  <tr key={category.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">{category.name}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
+                        {category.slug}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {category.children.length}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={`/admin/categories/${category.id}/edit`}>
+                          <PencilIcon className="w-4 h-4" />
+                          Labot
+                        </Link>
+                      </Button>
+                      <DeleteCategoryButton 
+                        categoryId={category.id}
+                        categoryName={category.name}
+                        hasChildren={category.children.length > 0}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Subcategories */}
+        {subcategories.length > 0 && (
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h3 className="text-lg font-medium text-gray-900">Apakškategorijas</h3>
+            </div>
+            
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nosaukums</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Apakškategorijas</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Darbības</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nosaukums
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      URL Slug
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Vecāka kategorija
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Darbības
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {mainCategories.map((category) => (
-                    <tr key={category.id}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                        {category.name}
+                  {subcategories.map((category) => (
+                    <tr key={category.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center text-sm font-medium text-gray-900">
+                          <ArrowRightIcon className="w-4 h-4 text-gray-400 mr-2" />
+                          {category.name}
+                        </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">
-                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
                           {category.slug}
-                        </code>
+                        </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-900">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {category.children.length}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          {category.parent?.name}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                        <Link 
-                          href={`/admin/categories/${category.id}/edit`}
-                          className="text-blue-600 hover:text-blue-900"
-                        >
-                          Labot
-                        </Link>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href={`/admin/categories/${category.id}/edit`}>
+                            <PencilIcon className="w-4 h-4" />
+                            Labot
+                          </Link>
+                        </Button>
                         <DeleteCategoryButton 
                           categoryId={category.id}
                           categoryName={category.name}
-                          hasChildren={category.children.length > 0}
+                          hasChildren={false}
                         />
                       </td>
                     </tr>
@@ -97,75 +229,7 @@ export default async function CategoriesPage() {
               </table>
             </div>
           </div>
-
-          {/* Subcategories */}
-          {subcategories.length > 0 && (
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Apakškategorijas</h3>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nosaukums</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Slug</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vecāka kategorija</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Darbības</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {subcategories.map((category) => (
-                      <tr key={category.id}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                          <div className="flex items-center">
-                            <span className="text-gray-400 mr-2">└</span>
-                            {category.name}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                            {category.slug}
-                          </code>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          {category.parent?.name}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                          <Link 
-                            href={`/admin/categories/${category.id}/edit`}
-                            className="text-blue-600 hover:text-blue-900"
-                          >
-                            Labot
-                          </Link>
-                          <DeleteCategoryButton 
-                            categoryId={category.id}
-                            categoryName={category.name}
-                            hasChildren={false}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="text-sm text-gray-600">
-        Kopā: {mainCategories.length} galvenās kategorijas, {subcategories.length} apakškategorijas
-      </div>
-
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 className="font-semibold text-blue-900 mb-2">ℹ️ Kā izmantot</h3>
-        <div className="text-blue-800 text-sm space-y-1">
-          <p>• Kategorijas tiek izmantotas produktu organizēšanai</p>
-          <p>• Slug tiek izmantots URL veidošanai</p>
-          <p>• Varat izveidot apakškategorijas, izvēloties vecāka kategoriju</p>
-          <p>• Kategoriju ar apakškategorijām nevar izdzēst</p>
-        </div>
+        )}
       </div>
     </div>
   );

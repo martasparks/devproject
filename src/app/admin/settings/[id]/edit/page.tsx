@@ -24,15 +24,9 @@ export default async function EditSettingPage({ params }: EditSettingPageProps) 
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Labot iestatījumu</h1>
-      </div>
-
-      <SettingForm 
-        initialData={setting}
-        isEditing={true}
-      />
-    </div>
+    <SettingForm 
+      initialData={setting}
+      isEditing={true}
+    />
   );
 }

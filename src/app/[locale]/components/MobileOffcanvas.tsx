@@ -1,8 +1,9 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { XMarkIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useRouter, usePathname } from 'next/navigation';
+import { SignInModal } from '@/components/signin-modal';
 
 interface MobileOffcanvasProps {
   isOpen: boolean;
@@ -84,26 +85,12 @@ export default function MobileOffcanvas({ isOpen, onClose }: MobileOffcanvasProp
           <div>
             <h3 className="text-sm font-medium text-gray-900 mb-3">Ātrie linki</h3>
             <div className="space-y-1">
-              <button
-                onClick={() => {
-                  router.push('/signin');
-                  onClose();
-                }}
-                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-lg"
-              >
-                <span className="text-gray-700">Ielogoties</span>
-                <ChevronRightIcon className="w-4 h-4 text-gray-400" />
-              </button>
-              <button
-                onClick={() => {
-                  router.push('/register');
-                  onClose();
-                }}
-                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-lg"
-              >
-                <span className="text-gray-700">Reģistrēties</span>
-                <ChevronRightIcon className="w-4 h-4 text-gray-400" />
-              </button>
+              <SignInModal currentLocale={currentLocale}>
+                <button className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50 rounded-lg">
+                  <span className="text-gray-700">Ielogoties</span>
+                  <ChevronRightIcon className="w-4 h-4 text-gray-400" />
+                </button>
+              </SignInModal>
             </div>
           </div>
         </div>

@@ -16,13 +16,5 @@ export default async function NewCategoryPage() {
     orderBy: { name: 'asc' }
   });
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Pievienot jaunu kategoriju</h1>
-      </div>
-
-      <CategoryForm availableParents={availableParents} />
-    </div>
-  );
+  return <CategoryForm availableParents={availableParents} />;
 }
