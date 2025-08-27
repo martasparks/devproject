@@ -7496,13 +7496,25 @@ export namespace Prisma {
 
   export type SliderMinAggregateOutputType = {
     id: number | null
+    desktopTitle: string | null
+    desktopSubtitle: string | null
+    desktopDescription: string | null
+    desktopImageUrl: string | null
+    desktopImageKey: string | null
+    desktopButtonText: string | null
+    desktopButtonUrl: string | null
+    desktopShowContent: boolean | null
+    mobileTitle: string | null
+    mobileSubtitle: string | null
+    mobileDescription: string | null
+    mobileImageUrl: string | null
+    mobileImageKey: string | null
+    mobileButtonText: string | null
+    mobileButtonUrl: string | null
+    mobileShowContent: boolean | null
     title: string | null
     subtitle: string | null
     description: string | null
-    desktopImageUrl: string | null
-    desktopImageKey: string | null
-    mobileImageUrl: string | null
-    mobileImageKey: string | null
     buttonText: string | null
     buttonUrl: string | null
     showContent: boolean | null
@@ -7514,13 +7526,25 @@ export namespace Prisma {
 
   export type SliderMaxAggregateOutputType = {
     id: number | null
+    desktopTitle: string | null
+    desktopSubtitle: string | null
+    desktopDescription: string | null
+    desktopImageUrl: string | null
+    desktopImageKey: string | null
+    desktopButtonText: string | null
+    desktopButtonUrl: string | null
+    desktopShowContent: boolean | null
+    mobileTitle: string | null
+    mobileSubtitle: string | null
+    mobileDescription: string | null
+    mobileImageUrl: string | null
+    mobileImageKey: string | null
+    mobileButtonText: string | null
+    mobileButtonUrl: string | null
+    mobileShowContent: boolean | null
     title: string | null
     subtitle: string | null
     description: string | null
-    desktopImageUrl: string | null
-    desktopImageKey: string | null
-    mobileImageUrl: string | null
-    mobileImageKey: string | null
     buttonText: string | null
     buttonUrl: string | null
     showContent: boolean | null
@@ -7532,13 +7556,25 @@ export namespace Prisma {
 
   export type SliderCountAggregateOutputType = {
     id: number
+    desktopTitle: number
+    desktopSubtitle: number
+    desktopDescription: number
+    desktopImageUrl: number
+    desktopImageKey: number
+    desktopButtonText: number
+    desktopButtonUrl: number
+    desktopShowContent: number
+    mobileTitle: number
+    mobileSubtitle: number
+    mobileDescription: number
+    mobileImageUrl: number
+    mobileImageKey: number
+    mobileButtonText: number
+    mobileButtonUrl: number
+    mobileShowContent: number
     title: number
     subtitle: number
     description: number
-    desktopImageUrl: number
-    desktopImageKey: number
-    mobileImageUrl: number
-    mobileImageKey: number
     buttonText: number
     buttonUrl: number
     showContent: number
@@ -7562,13 +7598,25 @@ export namespace Prisma {
 
   export type SliderMinAggregateInputType = {
     id?: true
+    desktopTitle?: true
+    desktopSubtitle?: true
+    desktopDescription?: true
+    desktopImageUrl?: true
+    desktopImageKey?: true
+    desktopButtonText?: true
+    desktopButtonUrl?: true
+    desktopShowContent?: true
+    mobileTitle?: true
+    mobileSubtitle?: true
+    mobileDescription?: true
+    mobileImageUrl?: true
+    mobileImageKey?: true
+    mobileButtonText?: true
+    mobileButtonUrl?: true
+    mobileShowContent?: true
     title?: true
     subtitle?: true
     description?: true
-    desktopImageUrl?: true
-    desktopImageKey?: true
-    mobileImageUrl?: true
-    mobileImageKey?: true
     buttonText?: true
     buttonUrl?: true
     showContent?: true
@@ -7580,13 +7628,25 @@ export namespace Prisma {
 
   export type SliderMaxAggregateInputType = {
     id?: true
+    desktopTitle?: true
+    desktopSubtitle?: true
+    desktopDescription?: true
+    desktopImageUrl?: true
+    desktopImageKey?: true
+    desktopButtonText?: true
+    desktopButtonUrl?: true
+    desktopShowContent?: true
+    mobileTitle?: true
+    mobileSubtitle?: true
+    mobileDescription?: true
+    mobileImageUrl?: true
+    mobileImageKey?: true
+    mobileButtonText?: true
+    mobileButtonUrl?: true
+    mobileShowContent?: true
     title?: true
     subtitle?: true
     description?: true
-    desktopImageUrl?: true
-    desktopImageKey?: true
-    mobileImageUrl?: true
-    mobileImageKey?: true
     buttonText?: true
     buttonUrl?: true
     showContent?: true
@@ -7598,13 +7658,25 @@ export namespace Prisma {
 
   export type SliderCountAggregateInputType = {
     id?: true
+    desktopTitle?: true
+    desktopSubtitle?: true
+    desktopDescription?: true
+    desktopImageUrl?: true
+    desktopImageKey?: true
+    desktopButtonText?: true
+    desktopButtonUrl?: true
+    desktopShowContent?: true
+    mobileTitle?: true
+    mobileSubtitle?: true
+    mobileDescription?: true
+    mobileImageUrl?: true
+    mobileImageKey?: true
+    mobileButtonText?: true
+    mobileButtonUrl?: true
+    mobileShowContent?: true
     title?: true
     subtitle?: true
     description?: true
-    desktopImageUrl?: true
-    desktopImageKey?: true
-    mobileImageUrl?: true
-    mobileImageKey?: true
     buttonText?: true
     buttonUrl?: true
     showContent?: true
@@ -7703,13 +7775,25 @@ export namespace Prisma {
 
   export type SliderGroupByOutputType = {
     id: number
-    title: string
-    subtitle: string | null
-    description: string | null
+    desktopTitle: string | null
+    desktopSubtitle: string | null
+    desktopDescription: string | null
     desktopImageUrl: string
     desktopImageKey: string
+    desktopButtonText: string | null
+    desktopButtonUrl: string | null
+    desktopShowContent: boolean
+    mobileTitle: string | null
+    mobileSubtitle: string | null
+    mobileDescription: string | null
     mobileImageUrl: string | null
     mobileImageKey: string | null
+    mobileButtonText: string | null
+    mobileButtonUrl: string | null
+    mobileShowContent: boolean
+    title: string | null
+    subtitle: string | null
+    description: string | null
     buttonText: string | null
     buttonUrl: string | null
     showContent: boolean
@@ -7740,13 +7824,25 @@ export namespace Prisma {
 
   export type SliderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    desktopTitle?: boolean
+    desktopSubtitle?: boolean
+    desktopDescription?: boolean
+    desktopImageUrl?: boolean
+    desktopImageKey?: boolean
+    desktopButtonText?: boolean
+    desktopButtonUrl?: boolean
+    desktopShowContent?: boolean
+    mobileTitle?: boolean
+    mobileSubtitle?: boolean
+    mobileDescription?: boolean
+    mobileImageUrl?: boolean
+    mobileImageKey?: boolean
+    mobileButtonText?: boolean
+    mobileButtonUrl?: boolean
+    mobileShowContent?: boolean
     title?: boolean
     subtitle?: boolean
     description?: boolean
-    desktopImageUrl?: boolean
-    desktopImageKey?: boolean
-    mobileImageUrl?: boolean
-    mobileImageKey?: boolean
     buttonText?: boolean
     buttonUrl?: boolean
     showContent?: boolean
@@ -7758,13 +7854,25 @@ export namespace Prisma {
 
   export type SliderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    desktopTitle?: boolean
+    desktopSubtitle?: boolean
+    desktopDescription?: boolean
+    desktopImageUrl?: boolean
+    desktopImageKey?: boolean
+    desktopButtonText?: boolean
+    desktopButtonUrl?: boolean
+    desktopShowContent?: boolean
+    mobileTitle?: boolean
+    mobileSubtitle?: boolean
+    mobileDescription?: boolean
+    mobileImageUrl?: boolean
+    mobileImageKey?: boolean
+    mobileButtonText?: boolean
+    mobileButtonUrl?: boolean
+    mobileShowContent?: boolean
     title?: boolean
     subtitle?: boolean
     description?: boolean
-    desktopImageUrl?: boolean
-    desktopImageKey?: boolean
-    mobileImageUrl?: boolean
-    mobileImageKey?: boolean
     buttonText?: boolean
     buttonUrl?: boolean
     showContent?: boolean
@@ -7776,13 +7884,25 @@ export namespace Prisma {
 
   export type SliderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    desktopTitle?: boolean
+    desktopSubtitle?: boolean
+    desktopDescription?: boolean
+    desktopImageUrl?: boolean
+    desktopImageKey?: boolean
+    desktopButtonText?: boolean
+    desktopButtonUrl?: boolean
+    desktopShowContent?: boolean
+    mobileTitle?: boolean
+    mobileSubtitle?: boolean
+    mobileDescription?: boolean
+    mobileImageUrl?: boolean
+    mobileImageKey?: boolean
+    mobileButtonText?: boolean
+    mobileButtonUrl?: boolean
+    mobileShowContent?: boolean
     title?: boolean
     subtitle?: boolean
     description?: boolean
-    desktopImageUrl?: boolean
-    desktopImageKey?: boolean
-    mobileImageUrl?: boolean
-    mobileImageKey?: boolean
     buttonText?: boolean
     buttonUrl?: boolean
     showContent?: boolean
@@ -7794,13 +7914,25 @@ export namespace Prisma {
 
   export type SliderSelectScalar = {
     id?: boolean
+    desktopTitle?: boolean
+    desktopSubtitle?: boolean
+    desktopDescription?: boolean
+    desktopImageUrl?: boolean
+    desktopImageKey?: boolean
+    desktopButtonText?: boolean
+    desktopButtonUrl?: boolean
+    desktopShowContent?: boolean
+    mobileTitle?: boolean
+    mobileSubtitle?: boolean
+    mobileDescription?: boolean
+    mobileImageUrl?: boolean
+    mobileImageKey?: boolean
+    mobileButtonText?: boolean
+    mobileButtonUrl?: boolean
+    mobileShowContent?: boolean
     title?: boolean
     subtitle?: boolean
     description?: boolean
-    desktopImageUrl?: boolean
-    desktopImageKey?: boolean
-    mobileImageUrl?: boolean
-    mobileImageKey?: boolean
     buttonText?: boolean
     buttonUrl?: boolean
     showContent?: boolean
@@ -7810,20 +7942,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SliderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "description" | "desktopImageUrl" | "desktopImageKey" | "mobileImageUrl" | "mobileImageKey" | "buttonText" | "buttonUrl" | "showContent" | "isActive" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["slider"]>
+  export type SliderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "desktopTitle" | "desktopSubtitle" | "desktopDescription" | "desktopImageUrl" | "desktopImageKey" | "desktopButtonText" | "desktopButtonUrl" | "desktopShowContent" | "mobileTitle" | "mobileSubtitle" | "mobileDescription" | "mobileImageUrl" | "mobileImageKey" | "mobileButtonText" | "mobileButtonUrl" | "mobileShowContent" | "title" | "subtitle" | "description" | "buttonText" | "buttonUrl" | "showContent" | "isActive" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["slider"]>
 
   export type $SliderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Slider"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      title: string
-      subtitle: string | null
-      description: string | null
+      desktopTitle: string | null
+      desktopSubtitle: string | null
+      desktopDescription: string | null
       desktopImageUrl: string
       desktopImageKey: string
+      desktopButtonText: string | null
+      desktopButtonUrl: string | null
+      desktopShowContent: boolean
+      mobileTitle: string | null
+      mobileSubtitle: string | null
+      mobileDescription: string | null
       mobileImageUrl: string | null
       mobileImageKey: string | null
+      mobileButtonText: string | null
+      mobileButtonUrl: string | null
+      mobileShowContent: boolean
+      title: string | null
+      subtitle: string | null
+      description: string | null
       buttonText: string | null
       buttonUrl: string | null
       showContent: boolean
@@ -8255,13 +8399,25 @@ export namespace Prisma {
    */
   interface SliderFieldRefs {
     readonly id: FieldRef<"Slider", 'Int'>
+    readonly desktopTitle: FieldRef<"Slider", 'String'>
+    readonly desktopSubtitle: FieldRef<"Slider", 'String'>
+    readonly desktopDescription: FieldRef<"Slider", 'String'>
+    readonly desktopImageUrl: FieldRef<"Slider", 'String'>
+    readonly desktopImageKey: FieldRef<"Slider", 'String'>
+    readonly desktopButtonText: FieldRef<"Slider", 'String'>
+    readonly desktopButtonUrl: FieldRef<"Slider", 'String'>
+    readonly desktopShowContent: FieldRef<"Slider", 'Boolean'>
+    readonly mobileTitle: FieldRef<"Slider", 'String'>
+    readonly mobileSubtitle: FieldRef<"Slider", 'String'>
+    readonly mobileDescription: FieldRef<"Slider", 'String'>
+    readonly mobileImageUrl: FieldRef<"Slider", 'String'>
+    readonly mobileImageKey: FieldRef<"Slider", 'String'>
+    readonly mobileButtonText: FieldRef<"Slider", 'String'>
+    readonly mobileButtonUrl: FieldRef<"Slider", 'String'>
+    readonly mobileShowContent: FieldRef<"Slider", 'Boolean'>
     readonly title: FieldRef<"Slider", 'String'>
     readonly subtitle: FieldRef<"Slider", 'String'>
     readonly description: FieldRef<"Slider", 'String'>
-    readonly desktopImageUrl: FieldRef<"Slider", 'String'>
-    readonly desktopImageKey: FieldRef<"Slider", 'String'>
-    readonly mobileImageUrl: FieldRef<"Slider", 'String'>
-    readonly mobileImageKey: FieldRef<"Slider", 'String'>
     readonly buttonText: FieldRef<"Slider", 'String'>
     readonly buttonUrl: FieldRef<"Slider", 'String'>
     readonly showContent: FieldRef<"Slider", 'Boolean'>
@@ -15674,13 +15830,25 @@ export namespace Prisma {
 
   export const SliderScalarFieldEnum: {
     id: 'id',
+    desktopTitle: 'desktopTitle',
+    desktopSubtitle: 'desktopSubtitle',
+    desktopDescription: 'desktopDescription',
+    desktopImageUrl: 'desktopImageUrl',
+    desktopImageKey: 'desktopImageKey',
+    desktopButtonText: 'desktopButtonText',
+    desktopButtonUrl: 'desktopButtonUrl',
+    desktopShowContent: 'desktopShowContent',
+    mobileTitle: 'mobileTitle',
+    mobileSubtitle: 'mobileSubtitle',
+    mobileDescription: 'mobileDescription',
+    mobileImageUrl: 'mobileImageUrl',
+    mobileImageKey: 'mobileImageKey',
+    mobileButtonText: 'mobileButtonText',
+    mobileButtonUrl: 'mobileButtonUrl',
+    mobileShowContent: 'mobileShowContent',
     title: 'title',
     subtitle: 'subtitle',
     description: 'description',
-    desktopImageUrl: 'desktopImageUrl',
-    desktopImageKey: 'desktopImageKey',
-    mobileImageUrl: 'mobileImageUrl',
-    mobileImageKey: 'mobileImageKey',
     buttonText: 'buttonText',
     buttonUrl: 'buttonUrl',
     showContent: 'showContent',
@@ -16266,13 +16434,25 @@ export namespace Prisma {
     OR?: SliderWhereInput[]
     NOT?: SliderWhereInput | SliderWhereInput[]
     id?: IntFilter<"Slider"> | number
-    title?: StringFilter<"Slider"> | string
-    subtitle?: StringNullableFilter<"Slider"> | string | null
-    description?: StringNullableFilter<"Slider"> | string | null
+    desktopTitle?: StringNullableFilter<"Slider"> | string | null
+    desktopSubtitle?: StringNullableFilter<"Slider"> | string | null
+    desktopDescription?: StringNullableFilter<"Slider"> | string | null
     desktopImageUrl?: StringFilter<"Slider"> | string
     desktopImageKey?: StringFilter<"Slider"> | string
+    desktopButtonText?: StringNullableFilter<"Slider"> | string | null
+    desktopButtonUrl?: StringNullableFilter<"Slider"> | string | null
+    desktopShowContent?: BoolFilter<"Slider"> | boolean
+    mobileTitle?: StringNullableFilter<"Slider"> | string | null
+    mobileSubtitle?: StringNullableFilter<"Slider"> | string | null
+    mobileDescription?: StringNullableFilter<"Slider"> | string | null
     mobileImageUrl?: StringNullableFilter<"Slider"> | string | null
     mobileImageKey?: StringNullableFilter<"Slider"> | string | null
+    mobileButtonText?: StringNullableFilter<"Slider"> | string | null
+    mobileButtonUrl?: StringNullableFilter<"Slider"> | string | null
+    mobileShowContent?: BoolFilter<"Slider"> | boolean
+    title?: StringNullableFilter<"Slider"> | string | null
+    subtitle?: StringNullableFilter<"Slider"> | string | null
+    description?: StringNullableFilter<"Slider"> | string | null
     buttonText?: StringNullableFilter<"Slider"> | string | null
     buttonUrl?: StringNullableFilter<"Slider"> | string | null
     showContent?: BoolFilter<"Slider"> | boolean
@@ -16284,13 +16464,25 @@ export namespace Prisma {
 
   export type SliderOrderByWithRelationInput = {
     id?: SortOrder
-    title?: SortOrder
-    subtitle?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
+    desktopTitle?: SortOrderInput | SortOrder
+    desktopSubtitle?: SortOrderInput | SortOrder
+    desktopDescription?: SortOrderInput | SortOrder
     desktopImageUrl?: SortOrder
     desktopImageKey?: SortOrder
+    desktopButtonText?: SortOrderInput | SortOrder
+    desktopButtonUrl?: SortOrderInput | SortOrder
+    desktopShowContent?: SortOrder
+    mobileTitle?: SortOrderInput | SortOrder
+    mobileSubtitle?: SortOrderInput | SortOrder
+    mobileDescription?: SortOrderInput | SortOrder
     mobileImageUrl?: SortOrderInput | SortOrder
     mobileImageKey?: SortOrderInput | SortOrder
+    mobileButtonText?: SortOrderInput | SortOrder
+    mobileButtonUrl?: SortOrderInput | SortOrder
+    mobileShowContent?: SortOrder
+    title?: SortOrderInput | SortOrder
+    subtitle?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     buttonText?: SortOrderInput | SortOrder
     buttonUrl?: SortOrderInput | SortOrder
     showContent?: SortOrder
@@ -16305,13 +16497,25 @@ export namespace Prisma {
     AND?: SliderWhereInput | SliderWhereInput[]
     OR?: SliderWhereInput[]
     NOT?: SliderWhereInput | SliderWhereInput[]
-    title?: StringFilter<"Slider"> | string
-    subtitle?: StringNullableFilter<"Slider"> | string | null
-    description?: StringNullableFilter<"Slider"> | string | null
+    desktopTitle?: StringNullableFilter<"Slider"> | string | null
+    desktopSubtitle?: StringNullableFilter<"Slider"> | string | null
+    desktopDescription?: StringNullableFilter<"Slider"> | string | null
     desktopImageUrl?: StringFilter<"Slider"> | string
     desktopImageKey?: StringFilter<"Slider"> | string
+    desktopButtonText?: StringNullableFilter<"Slider"> | string | null
+    desktopButtonUrl?: StringNullableFilter<"Slider"> | string | null
+    desktopShowContent?: BoolFilter<"Slider"> | boolean
+    mobileTitle?: StringNullableFilter<"Slider"> | string | null
+    mobileSubtitle?: StringNullableFilter<"Slider"> | string | null
+    mobileDescription?: StringNullableFilter<"Slider"> | string | null
     mobileImageUrl?: StringNullableFilter<"Slider"> | string | null
     mobileImageKey?: StringNullableFilter<"Slider"> | string | null
+    mobileButtonText?: StringNullableFilter<"Slider"> | string | null
+    mobileButtonUrl?: StringNullableFilter<"Slider"> | string | null
+    mobileShowContent?: BoolFilter<"Slider"> | boolean
+    title?: StringNullableFilter<"Slider"> | string | null
+    subtitle?: StringNullableFilter<"Slider"> | string | null
+    description?: StringNullableFilter<"Slider"> | string | null
     buttonText?: StringNullableFilter<"Slider"> | string | null
     buttonUrl?: StringNullableFilter<"Slider"> | string | null
     showContent?: BoolFilter<"Slider"> | boolean
@@ -16323,13 +16527,25 @@ export namespace Prisma {
 
   export type SliderOrderByWithAggregationInput = {
     id?: SortOrder
-    title?: SortOrder
-    subtitle?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
+    desktopTitle?: SortOrderInput | SortOrder
+    desktopSubtitle?: SortOrderInput | SortOrder
+    desktopDescription?: SortOrderInput | SortOrder
     desktopImageUrl?: SortOrder
     desktopImageKey?: SortOrder
+    desktopButtonText?: SortOrderInput | SortOrder
+    desktopButtonUrl?: SortOrderInput | SortOrder
+    desktopShowContent?: SortOrder
+    mobileTitle?: SortOrderInput | SortOrder
+    mobileSubtitle?: SortOrderInput | SortOrder
+    mobileDescription?: SortOrderInput | SortOrder
     mobileImageUrl?: SortOrderInput | SortOrder
     mobileImageKey?: SortOrderInput | SortOrder
+    mobileButtonText?: SortOrderInput | SortOrder
+    mobileButtonUrl?: SortOrderInput | SortOrder
+    mobileShowContent?: SortOrder
+    title?: SortOrderInput | SortOrder
+    subtitle?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
     buttonText?: SortOrderInput | SortOrder
     buttonUrl?: SortOrderInput | SortOrder
     showContent?: SortOrder
@@ -16349,13 +16565,25 @@ export namespace Prisma {
     OR?: SliderScalarWhereWithAggregatesInput[]
     NOT?: SliderScalarWhereWithAggregatesInput | SliderScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Slider"> | number
-    title?: StringWithAggregatesFilter<"Slider"> | string
-    subtitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
-    description?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    desktopTitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    desktopSubtitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    desktopDescription?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     desktopImageUrl?: StringWithAggregatesFilter<"Slider"> | string
     desktopImageKey?: StringWithAggregatesFilter<"Slider"> | string
+    desktopButtonText?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    desktopButtonUrl?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    desktopShowContent?: BoolWithAggregatesFilter<"Slider"> | boolean
+    mobileTitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    mobileSubtitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    mobileDescription?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     mobileImageUrl?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     mobileImageKey?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    mobileButtonText?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    mobileButtonUrl?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    mobileShowContent?: BoolWithAggregatesFilter<"Slider"> | boolean
+    title?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    subtitle?: StringNullableWithAggregatesFilter<"Slider"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     buttonText?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     buttonUrl?: StringNullableWithAggregatesFilter<"Slider"> | string | null
     showContent?: BoolWithAggregatesFilter<"Slider"> | boolean
@@ -17198,13 +17426,25 @@ export namespace Prisma {
   }
 
   export type SliderCreateInput = {
-    title: string
-    subtitle?: string | null
-    description?: string | null
+    desktopTitle?: string | null
+    desktopSubtitle?: string | null
+    desktopDescription?: string | null
     desktopImageUrl: string
     desktopImageKey: string
+    desktopButtonText?: string | null
+    desktopButtonUrl?: string | null
+    desktopShowContent?: boolean
+    mobileTitle?: string | null
+    mobileSubtitle?: string | null
+    mobileDescription?: string | null
     mobileImageUrl?: string | null
     mobileImageKey?: string | null
+    mobileButtonText?: string | null
+    mobileButtonUrl?: string | null
+    mobileShowContent?: boolean
+    title?: string | null
+    subtitle?: string | null
+    description?: string | null
     buttonText?: string | null
     buttonUrl?: string | null
     showContent?: boolean
@@ -17216,13 +17456,25 @@ export namespace Prisma {
 
   export type SliderUncheckedCreateInput = {
     id?: number
-    title: string
-    subtitle?: string | null
-    description?: string | null
+    desktopTitle?: string | null
+    desktopSubtitle?: string | null
+    desktopDescription?: string | null
     desktopImageUrl: string
     desktopImageKey: string
+    desktopButtonText?: string | null
+    desktopButtonUrl?: string | null
+    desktopShowContent?: boolean
+    mobileTitle?: string | null
+    mobileSubtitle?: string | null
+    mobileDescription?: string | null
     mobileImageUrl?: string | null
     mobileImageKey?: string | null
+    mobileButtonText?: string | null
+    mobileButtonUrl?: string | null
+    mobileShowContent?: boolean
+    title?: string | null
+    subtitle?: string | null
+    description?: string | null
     buttonText?: string | null
     buttonUrl?: string | null
     showContent?: boolean
@@ -17233,13 +17485,25 @@ export namespace Prisma {
   }
 
   export type SliderUpdateInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopDescription?: NullableStringFieldUpdateOperationsInput | string | null
     desktopImageUrl?: StringFieldUpdateOperationsInput | string
     desktopImageKey?: StringFieldUpdateOperationsInput | string
+    desktopButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopShowContent?: BoolFieldUpdateOperationsInput | boolean
+    mobileTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileDescription?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileShowContent?: BoolFieldUpdateOperationsInput | boolean
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     buttonText?: NullableStringFieldUpdateOperationsInput | string | null
     buttonUrl?: NullableStringFieldUpdateOperationsInput | string | null
     showContent?: BoolFieldUpdateOperationsInput | boolean
@@ -17251,13 +17515,25 @@ export namespace Prisma {
 
   export type SliderUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopDescription?: NullableStringFieldUpdateOperationsInput | string | null
     desktopImageUrl?: StringFieldUpdateOperationsInput | string
     desktopImageKey?: StringFieldUpdateOperationsInput | string
+    desktopButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopShowContent?: BoolFieldUpdateOperationsInput | boolean
+    mobileTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileDescription?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileShowContent?: BoolFieldUpdateOperationsInput | boolean
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     buttonText?: NullableStringFieldUpdateOperationsInput | string | null
     buttonUrl?: NullableStringFieldUpdateOperationsInput | string | null
     showContent?: BoolFieldUpdateOperationsInput | boolean
@@ -17269,13 +17545,25 @@ export namespace Prisma {
 
   export type SliderCreateManyInput = {
     id?: number
-    title: string
-    subtitle?: string | null
-    description?: string | null
+    desktopTitle?: string | null
+    desktopSubtitle?: string | null
+    desktopDescription?: string | null
     desktopImageUrl: string
     desktopImageKey: string
+    desktopButtonText?: string | null
+    desktopButtonUrl?: string | null
+    desktopShowContent?: boolean
+    mobileTitle?: string | null
+    mobileSubtitle?: string | null
+    mobileDescription?: string | null
     mobileImageUrl?: string | null
     mobileImageKey?: string | null
+    mobileButtonText?: string | null
+    mobileButtonUrl?: string | null
+    mobileShowContent?: boolean
+    title?: string | null
+    subtitle?: string | null
+    description?: string | null
     buttonText?: string | null
     buttonUrl?: string | null
     showContent?: boolean
@@ -17286,13 +17574,25 @@ export namespace Prisma {
   }
 
   export type SliderUpdateManyMutationInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopDescription?: NullableStringFieldUpdateOperationsInput | string | null
     desktopImageUrl?: StringFieldUpdateOperationsInput | string
     desktopImageKey?: StringFieldUpdateOperationsInput | string
+    desktopButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopShowContent?: BoolFieldUpdateOperationsInput | boolean
+    mobileTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileDescription?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileShowContent?: BoolFieldUpdateOperationsInput | boolean
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     buttonText?: NullableStringFieldUpdateOperationsInput | string | null
     buttonUrl?: NullableStringFieldUpdateOperationsInput | string | null
     showContent?: BoolFieldUpdateOperationsInput | boolean
@@ -17304,13 +17604,25 @@ export namespace Prisma {
 
   export type SliderUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopDescription?: NullableStringFieldUpdateOperationsInput | string | null
     desktopImageUrl?: StringFieldUpdateOperationsInput | string
     desktopImageKey?: StringFieldUpdateOperationsInput | string
+    desktopButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    desktopShowContent?: BoolFieldUpdateOperationsInput | boolean
+    mobileTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileSubtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileDescription?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     mobileImageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonText?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileButtonUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    mobileShowContent?: BoolFieldUpdateOperationsInput | boolean
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    subtitle?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     buttonText?: NullableStringFieldUpdateOperationsInput | string | null
     buttonUrl?: NullableStringFieldUpdateOperationsInput | string | null
     showContent?: BoolFieldUpdateOperationsInput | boolean
@@ -18315,13 +18627,25 @@ export namespace Prisma {
 
   export type SliderCountOrderByAggregateInput = {
     id?: SortOrder
+    desktopTitle?: SortOrder
+    desktopSubtitle?: SortOrder
+    desktopDescription?: SortOrder
+    desktopImageUrl?: SortOrder
+    desktopImageKey?: SortOrder
+    desktopButtonText?: SortOrder
+    desktopButtonUrl?: SortOrder
+    desktopShowContent?: SortOrder
+    mobileTitle?: SortOrder
+    mobileSubtitle?: SortOrder
+    mobileDescription?: SortOrder
+    mobileImageUrl?: SortOrder
+    mobileImageKey?: SortOrder
+    mobileButtonText?: SortOrder
+    mobileButtonUrl?: SortOrder
+    mobileShowContent?: SortOrder
     title?: SortOrder
     subtitle?: SortOrder
     description?: SortOrder
-    desktopImageUrl?: SortOrder
-    desktopImageKey?: SortOrder
-    mobileImageUrl?: SortOrder
-    mobileImageKey?: SortOrder
     buttonText?: SortOrder
     buttonUrl?: SortOrder
     showContent?: SortOrder
@@ -18338,13 +18662,25 @@ export namespace Prisma {
 
   export type SliderMaxOrderByAggregateInput = {
     id?: SortOrder
+    desktopTitle?: SortOrder
+    desktopSubtitle?: SortOrder
+    desktopDescription?: SortOrder
+    desktopImageUrl?: SortOrder
+    desktopImageKey?: SortOrder
+    desktopButtonText?: SortOrder
+    desktopButtonUrl?: SortOrder
+    desktopShowContent?: SortOrder
+    mobileTitle?: SortOrder
+    mobileSubtitle?: SortOrder
+    mobileDescription?: SortOrder
+    mobileImageUrl?: SortOrder
+    mobileImageKey?: SortOrder
+    mobileButtonText?: SortOrder
+    mobileButtonUrl?: SortOrder
+    mobileShowContent?: SortOrder
     title?: SortOrder
     subtitle?: SortOrder
     description?: SortOrder
-    desktopImageUrl?: SortOrder
-    desktopImageKey?: SortOrder
-    mobileImageUrl?: SortOrder
-    mobileImageKey?: SortOrder
     buttonText?: SortOrder
     buttonUrl?: SortOrder
     showContent?: SortOrder
@@ -18356,13 +18692,25 @@ export namespace Prisma {
 
   export type SliderMinOrderByAggregateInput = {
     id?: SortOrder
+    desktopTitle?: SortOrder
+    desktopSubtitle?: SortOrder
+    desktopDescription?: SortOrder
+    desktopImageUrl?: SortOrder
+    desktopImageKey?: SortOrder
+    desktopButtonText?: SortOrder
+    desktopButtonUrl?: SortOrder
+    desktopShowContent?: SortOrder
+    mobileTitle?: SortOrder
+    mobileSubtitle?: SortOrder
+    mobileDescription?: SortOrder
+    mobileImageUrl?: SortOrder
+    mobileImageKey?: SortOrder
+    mobileButtonText?: SortOrder
+    mobileButtonUrl?: SortOrder
+    mobileShowContent?: SortOrder
     title?: SortOrder
     subtitle?: SortOrder
     description?: SortOrder
-    desktopImageUrl?: SortOrder
-    desktopImageKey?: SortOrder
-    mobileImageUrl?: SortOrder
-    mobileImageKey?: SortOrder
     buttonText?: SortOrder
     buttonUrl?: SortOrder
     showContent?: SortOrder

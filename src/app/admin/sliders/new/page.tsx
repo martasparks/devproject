@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { getUrlPlaceholderExamples } from '@/lib/url-utils';
 
 export default function NewSliderPage() {
   const router = useRouter();
@@ -91,37 +92,160 @@ export default function NewSliderPage() {
         </div>
         
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="title">Virsraksts *</Label>
-              <Input
-                type="text"
-                name="title"
-                id="title"
-                required
-                placeholder="Slaida virsraksts"
-              />
-            </div>
+          {/* Desktop Content */}
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-blue-900 mb-4">💻 Desktop versijas saturs</h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="desktopTitle">Desktop virsraksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopTitle"
+                    id="desktopTitle"
+                    placeholder="Desktop slaida virsraksts"
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="subtitle">Apakšvirsraksts</Label>
-              <Input
-                type="text"
-                name="subtitle"
-                id="subtitle"
-                placeholder="Slaida apakšvirsraksts"
-              />
+                <div className="space-y-2">
+                  <Label htmlFor="desktopSubtitle">Desktop apakšvirsraksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopSubtitle"
+                    id="desktopSubtitle"
+                    placeholder="Desktop slaida apakšvirsraksts"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="desktopDescription">Desktop apraksts</Label>
+                <Textarea
+                  name="desktopDescription"
+                  id="desktopDescription"
+                  rows={3}
+                  placeholder="Desktop slaida apraksts"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="desktopButtonText">Desktop pogas teksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopButtonText"
+                    id="desktopButtonText"
+                    placeholder="Uzzināt vairāk"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="desktopButtonUrl">Desktop pogas saite</Label>
+                  <Input
+                    type="text"
+                    name="desktopButtonUrl"
+                    id="desktopButtonUrl"
+                    placeholder={getUrlPlaceholderExamples('lv').internal}
+                  />
+                  <div className="flex items-start space-x-2 text-xs text-gray-600">
+                    <InformationCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p>Iekšējiem linkiem: <code className="bg-gray-100 px-1 rounded">mebeles/izpardosana</code></p>
+                      <p>Ārējiem linkiem: <code className="bg-gray-100 px-1 rounded">https://example.com</code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="desktopShowContent"
+                  id="desktopShowContent"
+                  defaultChecked
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <Label htmlFor="desktopShowContent">Rādīt desktop teksta saturu</Label>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Apraksts</Label>
-            <Textarea
-              name="description"
-              id="description"
-              rows={4}
-              placeholder="Slaida apraksts"
-            />
+          {/* Mobile Content */}
+          <div className="bg-green-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-green-900 mb-4">📱 Mobile versijas saturs</h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="mobileTitle">Mobile virsraksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileTitle"
+                    id="mobileTitle"
+                    placeholder="Mobile slaida virsraksts"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="mobileSubtitle">Mobile apakšvirsraksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileSubtitle"
+                    id="mobileSubtitle"
+                    placeholder="Mobile slaida apakšvirsraksts"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="mobileDescription">Mobile apraksts</Label>
+                <Textarea
+                  name="mobileDescription"
+                  id="mobileDescription"
+                  rows={3}
+                  placeholder="Mobile slaida apraksts"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="mobileButtonText">Mobile pogas teksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileButtonText"
+                    id="mobileButtonText"
+                    placeholder="Uzzināt vairāk"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="mobileButtonUrl">Mobile pogas saite</Label>
+                  <Input
+                    type="text"
+                    name="mobileButtonUrl"
+                    id="mobileButtonUrl"
+                    placeholder={getUrlPlaceholderExamples('lv').internal}
+                  />
+                  <div className="flex items-start space-x-2 text-xs text-gray-600">
+                    <InformationCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p>Iekšējiem linkiem: <code className="bg-gray-100 px-1 rounded">mebeles/izpardosana</code></p>
+                      <p>Ārējiem linkiem: <code className="bg-gray-100 px-1 rounded">https://example.com</code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="mobileShowContent"
+                  id="mobileShowContent"
+                  defaultChecked
+                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                />
+                <Label htmlFor="mobileShowContent">Rādīt mobile teksta saturu</Label>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Image */}
@@ -136,6 +260,7 @@ export default function NewSliderPage() {
                       <span className="font-semibold">Desktop attēls (1920x1080px)</span>
                     </p>
                     <p className="text-xs text-gray-500">PNG, JPG vai WebP (MAX. 5MB)</p>
+                    <p className="text-xs text-green-600 mt-1">✨ Automātiski optimizēts uz WebP formātu</p>
                   </div>
                   <input
                     id="desktopImage"
@@ -176,6 +301,7 @@ export default function NewSliderPage() {
                       <span className="font-semibold">Mobile attēls (1080x1350px)</span>
                     </p>
                     <p className="text-xs text-gray-500">PNG, JPG vai WebP (MAX. 5MB)</p>
+                    <p className="text-xs text-green-600 mt-1">✨ Automātiski optimizēts uz WebP formātu</p>
                   </div>
                   <input
                     id="mobileImage"
@@ -206,27 +332,6 @@ export default function NewSliderPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="buttonText">Pogas teksts</Label>
-              <Input
-                type="text"
-                name="buttonText"
-                id="buttonText"
-                placeholder="Uzzināt vairāk"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="buttonUrl">Pogas saite</Label>
-              <Input
-                type="url"
-                name="buttonUrl"
-                id="buttonUrl"
-                placeholder="https://example.com"
-              />
-            </div>
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="order">Kārtība</Label>
@@ -241,17 +346,6 @@ export default function NewSliderPage() {
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                name="showContent"
-                id="showContent"
-                defaultChecked
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <Label htmlFor="showContent">Rādīt teksta saturu (virsraksts, apraksts, poga)</Label>
-            </div>
-            
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -293,7 +387,7 @@ export default function NewSliderPage() {
               </li>
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
-                <span>Mobile attēla ieteicamie izmēri: 1080x1350px (4:5)</span>
+                <span>Mobile attēla ieteicamie izmēri: 1080x1350px (4:5 Instagram)</span>
               </li>
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
@@ -302,6 +396,22 @@ export default function NewSliderPage() {
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
                 <span>Neaktīvi slaidi netiek rādīti apmeklētājiem</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-green-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Visi attēli automātiski tiek optimizēti uz WebP formātu bez kvalitātes zuduma</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-blue-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Tagad varat iestatīt atšķirīgu saturu desktop un mobile versijām</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-purple-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Katrai versijai ir sava rādīt/paslēpt teksta satura iespēja</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-indigo-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Pogas saitēs varat rakstīt tikai ceļu (piem. "mebeles/dīvāni") - locale automātiski pieliekas</span>
               </li>
             </ul>
           </div>

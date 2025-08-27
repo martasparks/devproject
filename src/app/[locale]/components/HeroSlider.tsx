@@ -3,17 +3,37 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { getLocalizedSliderUrl } from '@/lib/url-utils';
 
 interface Slider {
   id: number;
-  title: string;
+  // Desktop version
+  desktopTitle?: string | null;
+  desktopSubtitle?: string | null;
+  desktopDescription?: string | null;
+  desktopImageUrl: string;
+  desktopButtonText?: string | null;
+  desktopButtonUrl?: string | null;
+  desktopShowContent: boolean;
+  
+  // Mobile version
+  mobileTitle?: string | null;
+  mobileSubtitle?: string | null;
+  mobileDescription?: string | null;
+  mobileImageUrl?: string | null;
+  mobileButtonText?: string | null;
+  mobileButtonUrl?: string | null;
+  mobileShowContent: boolean;
+  
+  // Legacy fields for backward compatibility
+  title?: string | null;
   subtitle?: string | null;
   description?: string | null;
-  desktopImageUrl: string;
-  mobileImageUrl?: string | null;
   buttonText?: string | null;
   buttonUrl?: string | null;
   showContent: boolean;
+  
   isActive: boolean;
   order: number;
 }
@@ -22,9 +42,12 @@ interface HeroSliderProps {
   initialSliders: Slider[];
 }
 
+
 export default function HeroSlider({ initialSliders }: HeroSliderProps) {
   const [sliders] = useState<Slider[]>(initialSliders);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const pathname = usePathname();
+  const currentLocale = pathname.split('/')[1] || 'lv';
 
   const TRANSITION_MS = 600; // crossfade duration
   const AUTOPLAY_MS = 7000;  // time each slide stays
@@ -92,7 +115,7 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
             <div className="hidden md:block absolute inset-0">
               <Image
                 src={s.desktopImageUrl}
-                alt={s.title}
+                alt={s.desktopTitle || s.title || 'Slider image'}
                 fill
                 priority={i === currentSlide}
                 className="object-cover object-[70%_60%]"
@@ -103,7 +126,7 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
             <div className="md:hidden absolute inset-0">
               <Image
                 src={s.mobileImageUrl || s.desktopImageUrl}
-                alt={s.title}
+                alt={s.mobileTitle || s.title || 'Slider image'}
                 fill
                 priority={i === currentSlide}
                 className="object-cover object-[50%_75%]"
@@ -115,23 +138,50 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/30 pointer-events-none" />
       </div>
 
-      {slider.showContent && (
-        <div className="relative z-20 flex items-center h-full py-6">
+      {/* Desktop Content */}
+      {slider.desktopShowContent && (
+        <div className="hidden md:flex relative z-20 items-center justify-center h-full py-6">
+          <div className="max-w-7xl mx-auto px-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-5xl font-bold mb-5">{slider.desktopTitle || slider.title}</h2>
+              {(slider.desktopSubtitle || slider.subtitle) && (
+                <h3 className="text-2xl mb-2">{slider.desktopSubtitle || slider.subtitle}</h3>
+              )}
+              {(slider.desktopDescription || slider.description) && (
+                <p className="text-1xl mb-5 opacity-90 max-w-2xl">{slider.desktopDescription || slider.description}</p>
+              )}
+              {(slider.desktopButtonText || slider.buttonText) && (slider.desktopButtonUrl || slider.buttonUrl) && (
+                <Link
+                  href={getLocalizedSliderUrl(slider.desktopButtonUrl || slider.buttonUrl || '', currentLocale)}
+                  className="inline-block bg-white/90 backdrop-blur px-6 py-3 rounded-lg text-lg font-semibold text-gray-900 hover:bg-white transition-colors"
+                >
+                  {slider.desktopButtonText || slider.buttonText}
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {slider.mobileShowContent && (
+        <div className="md:hidden relative z-20 flex items-center h-full py-6">
           <div className="max-w-7xl mx-auto px-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
             <div className="max-w-3xl">
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3">{slider.title}</h2>
-              {slider.subtitle && (
-                <h3 className="text-lg md:text-2xl mb-3">{slider.subtitle}</h3>
+              {slider.mobileTitle && (
+                <h2 className="text-3xl sm:text-4xl font-bold mb-3">{slider.mobileTitle}</h2>
               )}
-              {slider.description && (
-                <p className="text-base md:text-xl mb-6 opacity-90 max-w-2xl">{slider.description}</p>
+              {slider.mobileSubtitle && (
+                <h3 className="text-lg mb-3">{slider.mobileSubtitle}</h3>
               )}
-              {slider.buttonText && slider.buttonUrl && (
+              {slider.mobileDescription && (
+                <p className="text-base opacity-90 max-w-2xl">{slider.mobileDescription}</p>
+              )}
+              {slider.mobileButtonText && slider.mobileButtonUrl && (
                 <Link
-                  href={slider.buttonUrl}
-                  className="inline-block bg-white/90 backdrop-blur px-6 py-3 rounded-lg text-base md:text-lg font-semibold text-gray-900 hover:bg-white transition-colors"
+                  href={getLocalizedSliderUrl(slider.mobileButtonUrl, currentLocale)}
+                  className="inline-block bg-white/90 backdrop-blur px-6 py-3 rounded-lg text-lg font-semibold text-gray-900 hover:bg-white transition-colors"
                 >
-                  {slider.buttonText}
+                  {slider.mobileButtonText}
                 </Link>
               )}
             </div>

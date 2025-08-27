@@ -88,19 +88,39 @@ model Translation {
 }
 
 model Slider {
-  id              Int     @id @default(autoincrement())
-  title           String
-  subtitle        String?
-  description     String?
-  desktopImageUrl String
-  desktopImageKey String
-  mobileImageUrl  String?
-  mobileImageKey  String?
-  buttonText      String?
-  buttonUrl       String?
-  showContent     Boolean @default(true)
-  isActive        Boolean @default(true)
-  order           Int     @default(0)
+  id Int @id @default(autoincrement())
+
+  // Desktop version
+  desktopTitle       String?
+  desktopSubtitle    String?
+  desktopDescription String?
+  desktopImageUrl    String
+  desktopImageKey    String
+  desktopButtonText  String?
+  desktopButtonUrl   String?
+  desktopShowContent Boolean @default(true)
+
+  // Mobile version
+  mobileTitle       String?
+  mobileSubtitle    String?
+  mobileDescription String?
+  mobileImageUrl    String?
+  mobileImageKey    String?
+  mobileButtonText  String?
+  mobileButtonUrl   String?
+  mobileShowContent Boolean @default(true)
+
+  // Legacy fields (for backward compatibility)
+  title       String? // Will be migrated to desktopTitle
+  subtitle    String?
+  description String?
+  buttonText  String?
+  buttonUrl   String?
+  showContent Boolean @default(true)
+
+  // General settings
+  isActive Boolean @default(true)
+  order    Int     @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

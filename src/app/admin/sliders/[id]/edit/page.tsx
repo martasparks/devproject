@@ -8,18 +8,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { getUrlPlaceholderExamples, displaySliderButtonUrl } from '@/lib/url-utils';
 
 interface Slider {
   id: number;
-  title: string;
-  subtitle?: string;
-  description?: string;
+  // Desktop version
+  desktopTitle?: string | null;
+  desktopSubtitle?: string | null;
+  desktopDescription?: string | null;
   desktopImageUrl: string;
-  mobileImageUrl?: string;
-  buttonText?: string;
-  buttonUrl?: string;
+  desktopButtonText?: string | null;
+  desktopButtonUrl?: string | null;
+  desktopShowContent: boolean;
+  
+  // Mobile version
+  mobileTitle?: string | null;
+  mobileSubtitle?: string | null;
+  mobileDescription?: string | null;
+  mobileImageUrl?: string | null;
+  mobileButtonText?: string | null;
+  mobileButtonUrl?: string | null;
+  mobileShowContent: boolean;
+  
+  // Legacy fields for backward compatibility
+  title?: string | null;
+  subtitle?: string | null;
+  description?: string | null;
+  buttonText?: string | null;
+  buttonUrl?: string | null;
   showContent: boolean;
+  
   isActive: boolean;
   order: number;
 }
@@ -158,40 +177,170 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
         </div>
         
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="title">Virsraksts *</Label>
-              <Input
-                type="text"
-                name="title"
-                id="title"
-                required
-                defaultValue={slider.title}
-                placeholder="Slaida virsraksts"
-              />
-            </div>
+          {/* Desktop Content */}
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-blue-900 mb-4">🖥️ Desktop versijas saturs</h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="desktopTitle">Desktop virsraksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopTitle"
+                    id="desktopTitle"
+                    defaultValue={slider.desktopTitle || slider.title || ''}
+                    placeholder="Desktop slaida virsraksts"
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="subtitle">Apakšvirsraksts</Label>
-              <Input
-                type="text"
-                name="subtitle"
-                id="subtitle"
-                defaultValue={slider.subtitle || ''}
-                placeholder="Slaida apakšvirsraksts"
-              />
+                <div className="space-y-2">
+                  <Label htmlFor="desktopSubtitle">Desktop apakšvirsraksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopSubtitle"
+                    id="desktopSubtitle"
+                    defaultValue={slider.desktopSubtitle || slider.subtitle || ''}
+                    placeholder="Desktop slaida apakšvirsraksts"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="desktopDescription">Desktop apraksts</Label>
+                <Textarea
+                  name="desktopDescription"
+                  id="desktopDescription"
+                  rows={3}
+                  defaultValue={slider.desktopDescription || slider.description || ''}
+                  placeholder="Desktop slaida apraksts"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="desktopButtonText">Desktop pogas teksts</Label>
+                  <Input
+                    type="text"
+                    name="desktopButtonText"
+                    id="desktopButtonText"
+                    defaultValue={slider.desktopButtonText || slider.buttonText || ''}
+                    placeholder="Uzzināt vairāk"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="desktopButtonUrl">Desktop pogas saite</Label>
+                  <Input
+                    type="text"
+                    name="desktopButtonUrl"
+                    id="desktopButtonUrl"
+                    defaultValue={displaySliderButtonUrl(slider.desktopButtonUrl || slider.buttonUrl || '')}
+                    placeholder={getUrlPlaceholderExamples('lv').internal}
+                  />
+                  <div className="flex items-start space-x-2 text-xs text-gray-600">
+                    <InformationCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p>Iekšējiem linkeniem: <code className="bg-gray-100 px-1 rounded">mebeles/izpardosana</code></p>
+                      <p>Ārējiem linkaniem: <code className="bg-gray-100 px-1 rounded">https://example.com</code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="desktopShowContent"
+                  id="desktopShowContent"
+                  defaultChecked={slider.desktopShowContent ?? slider.showContent ?? true}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <Label htmlFor="desktopShowContent">Rādīt desktop teksta saturu</Label>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">Apraksts</Label>
-            <Textarea
-              name="description"
-              id="description"
-              rows={4}
-              defaultValue={slider.description || ''}
-              placeholder="Slaida apraksts"
-            />
+          {/* Mobile Content */}
+          <div className="bg-green-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold text-green-900 mb-4">📱 Mobile versijas saturs</h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="mobileTitle">Mobile virsraksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileTitle"
+                    id="mobileTitle"
+                    defaultValue={slider.mobileTitle || ''}
+                    placeholder="Mobile slaida virsraksts"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="mobileSubtitle">Mobile apakšvirsraksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileSubtitle"
+                    id="mobileSubtitle"
+                    defaultValue={slider.mobileSubtitle || ''}
+                    placeholder="Mobile slaida apakšvirsraksts"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="mobileDescription">Mobile apraksts</Label>
+                <Textarea
+                  name="mobileDescription"
+                  id="mobileDescription"
+                  rows={3}
+                  defaultValue={slider.mobileDescription || ''}
+                  placeholder="Mobile slaida apraksts"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="mobileButtonText">Mobile pogas teksts</Label>
+                  <Input
+                    type="text"
+                    name="mobileButtonText"
+                    id="mobileButtonText"
+                    defaultValue={slider.mobileButtonText || ''}
+                    placeholder="Uzzināt vairāk"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="mobileButtonUrl">Mobile pogas saite</Label>
+                  <Input
+                    type="text"
+                    name="mobileButtonUrl"
+                    id="mobileButtonUrl"
+                    defaultValue={displaySliderButtonUrl(slider.mobileButtonUrl || '')}
+                    placeholder={getUrlPlaceholderExamples('lv').internal}
+                  />
+                  <div className="flex items-start space-x-2 text-xs text-gray-600">
+                    <InformationCircleIcon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p>Iekšējiem linkeniem: <code className="bg-gray-100 px-1 rounded">mebeles/izpardosana</code></p>
+                      <p>Ārējiem linkaniem: <code className="bg-gray-100 px-1 rounded">https://example.com</code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="mobileShowContent"
+                  id="mobileShowContent"
+                  defaultChecked={slider.mobileShowContent ?? true}
+                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                />
+                <Label htmlFor="mobileShowContent">Rādīt mobile teksta saturu</Label>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Image */}
@@ -298,29 +447,6 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="buttonText">Pogas teksts</Label>
-              <Input
-                type="text"
-                name="buttonText"
-                id="buttonText"
-                defaultValue={slider.buttonText || ''}
-                placeholder="Uzzināt vairāk"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="buttonUrl">Pogas saite</Label>
-              <Input
-                type="url"
-                name="buttonUrl"
-                id="buttonUrl"
-                defaultValue={slider.buttonUrl || ''}
-                placeholder="https://example.com"
-              />
-            </div>
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="order">Kārtība</Label>
@@ -335,17 +461,6 @@ export default function EditSliderPage({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                name="showContent"
-                id="showContent"
-                defaultChecked={slider.showContent}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <Label htmlFor="showContent">Rādīt teksta saturu (virsraksts, apraksts, poga)</Label>
-            </div>
-            
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"

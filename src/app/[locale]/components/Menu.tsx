@@ -16,7 +16,7 @@ export default function Menu({ mobile = false }: MenuProps) {
   if (loading) {
     return (
       <nav className="bg-gradient-to-r from-slate-50 to-slate-100">
-        <div className="flex space-x-1">
+        <div className="max-w-screen-2xl mx-auto px-4 flex space-x-1">
           {Array.from({ length: 3 }).map((_, index) => (
             <div key={index} className="px-6 py-3">
               <div className="w-16 h-4 bg-slate-200/60 animate-pulse rounded-full"></div>
@@ -32,7 +32,6 @@ export default function Menu({ mobile = false }: MenuProps) {
   }
 
   if (mobile) {
-    // Mobile vertical menu
     return (
       <div className="space-y-2">
         {categories.map((cat) => (
@@ -69,11 +68,10 @@ export default function Menu({ mobile = false }: MenuProps) {
     );
   }
 
-  // Desktop horizontal menu
   return (
     <nav className="bg-gradient-to-r from-slate-50 via-white to-slate-50 border-b border-slate-200/60">
-      <div className="flex items-center space-x-1">
-        {categories.map((cat, index) => (
+      <div className="max-w-screen-2xl mx-auto px-4 flex space-x-1">
+        {categories.map((cat) => (
           <div key={cat.id} className="relative group">
             <Link 
               href={`/${currentLocale}/mebeles/${cat.slug}`}
@@ -91,7 +89,6 @@ export default function Menu({ mobile = false }: MenuProps) {
             {cat.children && cat.children.length > 0 && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out z-20">
                 <div className="bg-white rounded-xl shadow-xl border border-slate-200/60 py-3 min-w-56 backdrop-blur-sm">
-                  {/* Arrow pointer */}
                   <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-l border-t border-slate-200/60 rotate-45"></div>
                   
                   <div className="space-y-1 px-2">

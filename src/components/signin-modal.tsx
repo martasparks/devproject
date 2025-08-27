@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import {
   Dialog,
   DialogContent,
@@ -33,6 +34,7 @@ export function SignInModal({ children, currentLocale = 'lv' }: SignInModalProps
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleEmailSignIn = async (formData: FormData) => {
     setLoading(true);
@@ -56,8 +58,8 @@ export function SignInModal({ children, currentLocale = 'lv' }: SignInModalProps
         setError("Radās kļūda nosūtot e-pastu. Lūdzu mēģiniet vēlreiz.");
       } else {
         setError("");
-        setOpen(false);
-        // Show success message or redirect
+        setEmailSent(true);
+        toast.success("E-pasts nosūtīts! Pārbaudiet savu e-pasta kontu un noklikšķiniet uz saites, lai ielogotos.");
       }
     } catch (error) {
       console.error("SignIn error:", error);
@@ -90,8 +92,18 @@ export function SignInModal({ children, currentLocale = 'lv' }: SignInModalProps
     }
   };
 
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen) {
+      // Reset states when modal is closed
+      setEmailSent(false);
+      setError("");
+      setLoading(false);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
@@ -106,8 +118,35 @@ export function SignInModal({ children, currentLocale = 'lv' }: SignInModalProps
         </DialogHeader>
         
         <div className="space-y-4 py-4">
-          {/* Email Form */}
-          <form action={handleEmailSignIn} className="space-y-4">
+          {emailSent ? (
+            /* Email Sent Success State */
+            <div className="text-center space-y-4">
+              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-900">E-pasts nosūtīts!</h3>
+                <p className="text-sm text-gray-600">
+                  Mēs nosūtījām jums e-pastu ar pieejas saiti. Pārbaudiet savu e-pasta kontu un noklikšķiniet uz saites, lai ielogotos.
+                </p>
+                <p className="text-xs text-gray-500">
+                  Neredzat e-pastu? Pārbaudiet mēstuļu mapi vai mēģiniet vēlreiz.
+                </p>
+              </div>
+              <Button 
+                onClick={() => setEmailSent(false)}
+                variant="outline"
+                className="w-full"
+              >
+                Nosūtīt vēlreiz
+              </Button>
+            </div>
+          ) : (
+            <>
+              {/* Email Form */}
+              <form action={handleEmailSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                 {t('email', { default: 'E-pasts' })}
@@ -193,6 +232,8 @@ export function SignInModal({ children, currentLocale = 'lv' }: SignInModalProps
               </Button>
             ))}
           </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

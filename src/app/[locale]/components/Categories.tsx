@@ -4,21 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCategories } from "../contexts/CategoriesContext";
 
-// Default category icons for fallback
 const defaultCategoryIcons = ["📱", "👕", "🏠", "⚽", "📚", "💄", "🎮", "🚗"];
 
 export default function Categories() {
   const { categories: allCategories, loading } = useCategories();
-  const categories = allCategories.slice(0, 6); // Show only first 6 categories
+  const categories = allCategories.slice(0, 6);
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] || 'lv';
   return (
     <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-screen-2xl mx-auto px-4">
         <h3 className="text-3xl font-bold text-center mb-12">Populārās kategorijas</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
-            // Loading skeleton
             Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="bg-white rounded-lg shadow-md p-6 text-center">
                 <div className="w-16 h-16 bg-gray-200 animate-pulse rounded mx-auto mb-4"></div>

@@ -7,6 +7,7 @@ import Features from "./components/Features";
 import Footer from "./components/Footer";
 import BottomMenu from "./components/BottomMenu";
 import prisma from "@lib/prisma";
+import Menu from "./components/Menu";
 
 async function getActiveSliders() {
   try {
@@ -33,6 +34,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-gray-50 pb-16 md:pb-0">
       <TopBar />
       <Header />
+      <Menu />
       <HeroSlider initialSliders={sliders} />
       <Categories />
       <FeaturedProducts />

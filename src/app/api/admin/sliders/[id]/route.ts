@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@lib/prisma';
 import { auth } from '@lib/auth';
 import { uploadToS3, deleteFromS3 } from '@lib/s3-upload';
+import { processSliderButtonUrl } from '@lib/url-utils';
 
 export async function GET(
   request: NextRequest,
@@ -54,23 +55,33 @@ export async function PUT(
     }
 
     const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const subtitle = formData.get('subtitle') as string;
-    const description = formData.get('description') as string;
-    const buttonText = formData.get('buttonText') as string;
-    const buttonUrl = formData.get('buttonUrl') as string;
-    const showContent = formData.get('showContent') === 'on';
+    
+    // Desktop fields
+    const desktopTitle = formData.get('desktopTitle') as string;
+    const desktopSubtitle = formData.get('desktopSubtitle') as string;
+    const desktopDescription = formData.get('desktopDescription') as string;
+    const desktopButtonText = formData.get('desktopButtonText') as string;
+    const desktopButtonUrlRaw = formData.get('desktopButtonUrl') as string;
+    const desktopShowContent = formData.get('desktopShowContent') === 'on';
+    
+    // Mobile fields
+    const mobileTitle = formData.get('mobileTitle') as string;
+    const mobileSubtitle = formData.get('mobileSubtitle') as string;
+    const mobileDescription = formData.get('mobileDescription') as string;
+    const mobileButtonText = formData.get('mobileButtonText') as string;
+    const mobileButtonUrlRaw = formData.get('mobileButtonUrl') as string;
+    const mobileShowContent = formData.get('mobileShowContent') === 'on';
+    
+    // Process URLs - remove any locale prefixes for clean storage
+    const desktopButtonUrl = processSliderButtonUrl(desktopButtonUrlRaw);
+    const mobileButtonUrl = processSliderButtonUrl(mobileButtonUrlRaw);
+    
+    // General fields
     const isActive = formData.get('isActive') === 'on';
     const order = parseInt(formData.get('order') as string) || existingSlider.order;
     const desktopImageFile = formData.get('desktopImage') as File | null;
     const mobileImageFile = formData.get('mobileImage') as File | null;
 
-    if (!title) {
-      return NextResponse.json(
-        { error: 'Title is required' },
-        { status: 400 }
-      );
-    }
 
     let desktopImageUrl = existingSlider.desktopImageUrl;
     let desktopImageKey = existingSlider.desktopImageKey;
@@ -114,18 +125,37 @@ export async function PUT(
     const slider = await prisma.slider.update({
       where: { id: parseInt(id) },
       data: {
-        title,
-        subtitle: subtitle || null,
-        description: description || null,
+        // Desktop fields
+        desktopTitle: desktopTitle || null,
+        desktopSubtitle: desktopSubtitle || null,
+        desktopDescription: desktopDescription || null,
         desktopImageUrl,
         desktopImageKey,
+        desktopButtonText: desktopButtonText || null,
+        desktopButtonUrl: desktopButtonUrl || null,
+        desktopShowContent,
+        
+        // Mobile fields
+        mobileTitle: mobileTitle || null,
+        mobileSubtitle: mobileSubtitle || null,
+        mobileDescription: mobileDescription || null,
         mobileImageUrl,
         mobileImageKey,
-        buttonText: buttonText || null,
-        buttonUrl: buttonUrl || null,
-        showContent,
+        mobileButtonText: mobileButtonText || null,
+        mobileButtonUrl: mobileButtonUrl || null,
+        mobileShowContent,
+        
+        // General fields
         isActive,
         order,
+        
+        // Legacy compatibility (can be removed later)
+        title: desktopTitle || existingSlider.title,
+        subtitle: desktopSubtitle || existingSlider.subtitle,
+        description: desktopDescription || existingSlider.description,
+        buttonText: desktopButtonText || existingSlider.buttonText,
+        buttonUrl: desktopButtonUrl || existingSlider.buttonUrl,
+        showContent: desktopShowContent,
       },
     });
 
