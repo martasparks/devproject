@@ -172,6 +172,7 @@ model ProductBrand {
   brandCode      String  @unique
   name           String
   slug           String  @unique
+  deliveryTime   String?
   logoUrl        String?
   description    String?
   isActive       Boolean @default(true)

@@ -12057,6 +12057,7 @@ export namespace Prisma {
     brandCode: string | null
     name: string | null
     slug: string | null
+    deliveryTime: string | null
     logoUrl: string | null
     description: string | null
     isActive: boolean | null
@@ -12070,6 +12071,7 @@ export namespace Prisma {
     brandCode: string | null
     name: string | null
     slug: string | null
+    deliveryTime: string | null
     logoUrl: string | null
     description: string | null
     isActive: boolean | null
@@ -12083,6 +12085,7 @@ export namespace Prisma {
     brandCode: number
     name: number
     slug: number
+    deliveryTime: number
     logoUrl: number
     description: number
     isActive: number
@@ -12106,6 +12109,7 @@ export namespace Prisma {
     brandCode?: true
     name?: true
     slug?: true
+    deliveryTime?: true
     logoUrl?: true
     description?: true
     isActive?: true
@@ -12119,6 +12123,7 @@ export namespace Prisma {
     brandCode?: true
     name?: true
     slug?: true
+    deliveryTime?: true
     logoUrl?: true
     description?: true
     isActive?: true
@@ -12132,6 +12137,7 @@ export namespace Prisma {
     brandCode?: true
     name?: true
     slug?: true
+    deliveryTime?: true
     logoUrl?: true
     description?: true
     isActive?: true
@@ -12232,6 +12238,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime: string | null
     logoUrl: string | null
     description: string | null
     isActive: boolean
@@ -12264,6 +12271,7 @@ export namespace Prisma {
     brandCode?: boolean
     name?: boolean
     slug?: boolean
+    deliveryTime?: boolean
     logoUrl?: boolean
     description?: boolean
     isActive?: boolean
@@ -12279,6 +12287,7 @@ export namespace Prisma {
     brandCode?: boolean
     name?: boolean
     slug?: boolean
+    deliveryTime?: boolean
     logoUrl?: boolean
     description?: boolean
     isActive?: boolean
@@ -12292,6 +12301,7 @@ export namespace Prisma {
     brandCode?: boolean
     name?: boolean
     slug?: boolean
+    deliveryTime?: boolean
     logoUrl?: boolean
     description?: boolean
     isActive?: boolean
@@ -12305,6 +12315,7 @@ export namespace Prisma {
     brandCode?: boolean
     name?: boolean
     slug?: boolean
+    deliveryTime?: boolean
     logoUrl?: boolean
     description?: boolean
     isActive?: boolean
@@ -12313,7 +12324,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProductBrandOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "brandCode" | "name" | "slug" | "logoUrl" | "description" | "isActive" | "nextProductNum" | "createdAt" | "updatedAt", ExtArgs["result"]["productBrand"]>
+  export type ProductBrandOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "brandCode" | "name" | "slug" | "deliveryTime" | "logoUrl" | "description" | "isActive" | "nextProductNum" | "createdAt" | "updatedAt", ExtArgs["result"]["productBrand"]>
   export type ProductBrandInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | ProductBrand$productsArgs<ExtArgs>
     _count?: boolean | ProductBrandCountOutputTypeDefaultArgs<ExtArgs>
@@ -12331,6 +12342,7 @@ export namespace Prisma {
       brandCode: string
       name: string
       slug: string
+      deliveryTime: string | null
       logoUrl: string | null
       description: string | null
       isActive: boolean
@@ -12765,6 +12777,7 @@ export namespace Prisma {
     readonly brandCode: FieldRef<"ProductBrand", 'String'>
     readonly name: FieldRef<"ProductBrand", 'String'>
     readonly slug: FieldRef<"ProductBrand", 'String'>
+    readonly deliveryTime: FieldRef<"ProductBrand", 'String'>
     readonly logoUrl: FieldRef<"ProductBrand", 'String'>
     readonly description: FieldRef<"ProductBrand", 'String'>
     readonly isActive: FieldRef<"ProductBrand", 'Boolean'>
@@ -15905,6 +15918,7 @@ export namespace Prisma {
     brandCode: 'brandCode',
     name: 'name',
     slug: 'slug',
+    deliveryTime: 'deliveryTime',
     logoUrl: 'logoUrl',
     description: 'description',
     isActive: 'isActive',
@@ -16798,6 +16812,7 @@ export namespace Prisma {
     brandCode?: StringFilter<"ProductBrand"> | string
     name?: StringFilter<"ProductBrand"> | string
     slug?: StringFilter<"ProductBrand"> | string
+    deliveryTime?: StringNullableFilter<"ProductBrand"> | string | null
     logoUrl?: StringNullableFilter<"ProductBrand"> | string | null
     description?: StringNullableFilter<"ProductBrand"> | string | null
     isActive?: BoolFilter<"ProductBrand"> | boolean
@@ -16812,6 +16827,7 @@ export namespace Prisma {
     brandCode?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    deliveryTime?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -16829,6 +16845,7 @@ export namespace Prisma {
     OR?: ProductBrandWhereInput[]
     NOT?: ProductBrandWhereInput | ProductBrandWhereInput[]
     name?: StringFilter<"ProductBrand"> | string
+    deliveryTime?: StringNullableFilter<"ProductBrand"> | string | null
     logoUrl?: StringNullableFilter<"ProductBrand"> | string | null
     description?: StringNullableFilter<"ProductBrand"> | string | null
     isActive?: BoolFilter<"ProductBrand"> | boolean
@@ -16843,6 +16860,7 @@ export namespace Prisma {
     brandCode?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    deliveryTime?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -16864,6 +16882,7 @@ export namespace Prisma {
     brandCode?: StringWithAggregatesFilter<"ProductBrand"> | string
     name?: StringWithAggregatesFilter<"ProductBrand"> | string
     slug?: StringWithAggregatesFilter<"ProductBrand"> | string
+    deliveryTime?: StringNullableWithAggregatesFilter<"ProductBrand"> | string | null
     logoUrl?: StringNullableWithAggregatesFilter<"ProductBrand"> | string | null
     description?: StringNullableWithAggregatesFilter<"ProductBrand"> | string | null
     isActive?: BoolWithAggregatesFilter<"ProductBrand"> | boolean
@@ -17851,6 +17870,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime?: string | null
     logoUrl?: string | null
     description?: string | null
     isActive?: boolean
@@ -17865,6 +17885,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime?: string | null
     logoUrl?: string | null
     description?: string | null
     isActive?: boolean
@@ -17879,6 +17900,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -17893,6 +17915,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -17907,6 +17930,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime?: string | null
     logoUrl?: string | null
     description?: string | null
     isActive?: boolean
@@ -17920,6 +17944,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -17933,6 +17958,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -18863,6 +18889,7 @@ export namespace Prisma {
     brandCode?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    deliveryTime?: SortOrder
     logoUrl?: SortOrder
     description?: SortOrder
     isActive?: SortOrder
@@ -18880,6 +18907,7 @@ export namespace Prisma {
     brandCode?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    deliveryTime?: SortOrder
     logoUrl?: SortOrder
     description?: SortOrder
     isActive?: SortOrder
@@ -18893,6 +18921,7 @@ export namespace Prisma {
     brandCode?: SortOrder
     name?: SortOrder
     slug?: SortOrder
+    deliveryTime?: SortOrder
     logoUrl?: SortOrder
     description?: SortOrder
     isActive?: SortOrder
@@ -20373,6 +20402,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime?: string | null
     logoUrl?: string | null
     description?: string | null
     isActive?: boolean
@@ -20386,6 +20416,7 @@ export namespace Prisma {
     brandCode: string
     name: string
     slug: string
+    deliveryTime?: string | null
     logoUrl?: string | null
     description?: string | null
     isActive?: boolean
@@ -20472,6 +20503,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -20485,6 +20517,7 @@ export namespace Prisma {
     brandCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    deliveryTime?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean

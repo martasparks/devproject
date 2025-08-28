@@ -22,8 +22,18 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
       include: { parent: true, children: true }
     }),
     prisma.category.findMany({
-      where: { parentId: null },
-      orderBy: { name: 'asc' }
+      include: {
+        parent: {
+          select: {
+            name: true,
+            slug: true
+          }
+        }
+      },
+      orderBy: [
+        { parent: { name: 'asc' } },
+        { name: 'asc' }
+      ]
     })
   ]);
 

@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CheckIcon, ArrowLeftIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 
 interface Category {
@@ -15,7 +14,8 @@ interface Category {
   name: string;
   slug: string;
   parentId?: string | null;
-  parent?: { id: string; name: string } | null;
+  parent?: { id: string; name: string; slug: string } | null;
+  depth?: number;
 }
 
 interface CategoryFormProps {
@@ -186,7 +186,7 @@ export default function CategoryForm({ initialData, isEditing = false, available
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="parentId">Vecāka kategorija (neobligāti)</Label>
+            <Label htmlFor="parentId">Galvenā kategorija</Label>
             <select
               id="parentId"
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -196,7 +196,7 @@ export default function CategoryForm({ initialData, isEditing = false, available
               <option value="">Nav vecāka kategorijas</option>
               {parentOptions.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name}
+                  {"— ".repeat(category.depth ?? 0) + category.name}
                 </option>
               ))}
             </select>
@@ -241,7 +241,11 @@ export default function CategoryForm({ initialData, isEditing = false, available
               </li>
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
-                <span>Apakškategorijas palīdz organizēt produktus</span>
+                <span>Varat izveidot apakškategorijas jebkurai kategorijai</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Hierarhija: Virtuve → Moduļu sistēmas → Sunrise Premier</span>
               </li>
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>

@@ -18,12 +18,34 @@ export default async function CategoriesPage() {
       parent: true,
       children: true,
     },
-    orderBy: { name: 'asc' }
+    orderBy: { createdAt: 'asc' }
   });
 
-  // Separate main categories and subcategories
+  // Build hierarchical structure
   const mainCategories = categories.filter(cat => !cat.parentId);
-  const subcategories = categories.filter(cat => cat.parentId);
+  
+  const buildHierarchy = (parentId: string | null, level = 0): any[] => {
+    return categories
+      .filter(cat => cat.parentId === parentId)
+      .map(cat => ({
+        ...cat,
+        level,
+        children: buildHierarchy(cat.id, level + 1)
+      }));
+  };
+  
+  const hierarchicalData: any[] = [];
+  mainCategories.forEach(mainCat => {
+    hierarchicalData.push({ ...mainCat, level: 0 });
+    const addChildren = (parentId: string, level: number) => {
+      const children = categories.filter(cat => cat.parentId === parentId);
+      children.forEach(child => {
+        hierarchicalData.push({ ...child, level });
+        addChildren(child.id, level + 1);
+      });
+    };
+    addChildren(mainCat.id, 1);
+  });
 
   if (!categories || categories.length === 0) {
     return (
@@ -98,138 +120,89 @@ export default async function CategoriesPage() {
             </div>
             <div>
               <p className="text-sm font-medium text-gray-600">Apakškategorijas</p>
-              <p className="text-2xl font-bold text-gray-900">{subcategories.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{categories.filter(cat => cat.parentId).length}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Tables */}
-      <div className="space-y-6">
-        {/* Main Categories */}
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <h3 className="text-lg font-medium text-gray-900">Galvenās kategorijas</h3>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nosaukums
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    URL Slug
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Apakškategorijas
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Darbības
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {mainCategories.map((category) => (
-                  <tr key={category.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{category.name}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
-                        {category.slug}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {category.children.length}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/admin/categories/${category.id}/edit`}>
-                          <PencilIcon className="w-4 h-4" />
-                          Labot
-                        </Link>
-                      </Button>
-                      <DeleteCategoryButton 
-                        categoryId={category.id}
-                        categoryName={category.name}
-                        hasChildren={category.children.length > 0}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Unified Hierarchical Table */}
+      <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h3 className="text-lg font-medium text-gray-900">Visas kategorijas</h3>
         </div>
-
-        {/* Subcategories */}
-        {subcategories.length > 0 && (
-          <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-              <h3 className="text-lg font-medium text-gray-900">Apakškategorijas</h3>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Nosaukums
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      URL Slug
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Vecāka kategorija
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Darbības
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {subcategories.map((category) => (
-                    <tr key={category.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center text-sm font-medium text-gray-900">
+        
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nosaukums
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  URL
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tips
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Darbības
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {hierarchicalData.map((category) => (
+                <tr key={category.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center text-sm font-medium text-gray-900" style={{ paddingLeft: `${category.level * 24}px` }}>
+                      {category.level > 0 && (
+                        <>
+                          {Array.from({ length: category.level }).map((_, i) => (
+                            <div key={i} className="w-4 h-4 flex items-center justify-center mr-1">
+                              <div className="w-px h-4 bg-gray-300"></div>
+                            </div>
+                          ))}
                           <ArrowRightIcon className="w-4 h-4 text-gray-400 mr-2" />
-                          {category.name}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
-                          {category.slug}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {category.parent?.name}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
-                        <Button variant="outline" size="sm" asChild>
-                          <Link href={`/admin/categories/${category.id}/edit`}>
-                            <PencilIcon className="w-4 h-4" />
-                            Labot
-                          </Link>
-                        </Button>
-                        <DeleteCategoryButton 
-                          categoryId={category.id}
-                          categoryName={category.name}
-                          hasChildren={false}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+                        </>
+                      )}
+                      {category.level === 0 && <FolderIcon className="w-4 h-4 text-blue-600 mr-2" />}
+                      {category.name}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
+                      {category.slug}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {category.level === 0 ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Galvenā kategorija
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        {category.level === 1 ? '1. apakškategorija' : `${category.level}. apakškategorija`}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/admin/categories/${category.id}/edit`}>
+                        <PencilIcon className="w-4 h-4" />
+                        Labot
+                      </Link>
+                    </Button>
+                    <DeleteCategoryButton 
+                      categoryId={category.id}
+                      categoryName={category.name}
+                      hasChildren={category.children && category.children.length > 0}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

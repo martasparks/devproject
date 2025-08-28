@@ -10,11 +10,34 @@ export default async function NewCategoryPage() {
     redirect("/");
   }
 
-  // Get all main categories for parent selection
-  const availableParents = await prisma.category.findMany({
+  function flattenCategories(categories: any[], depth = 0) {
+    let result: { id: string; name: string; slug: string; depth: number }[] = [];
+
+    for (const cat of categories) {
+      result.push({ id: cat.id, name: cat.name, slug: cat.slug, depth });
+
+      if (cat.children?.length) {
+        result = result.concat(flattenCategories(cat.children, depth + 1));
+      }
+    }
+
+    return result;
+  }
+
+  const categories = await prisma.category.findMany({
     where: { parentId: null },
-    orderBy: { name: 'asc' }
+    include: {
+      children: {
+        include: {
+          children: true,
+        },
+      },
+    },
+    orderBy: { name: "asc" },
   });
 
-  return <CategoryForm availableParents={availableParents} />;
+  const flatCategories = flattenCategories(categories);
+
+  return <CategoryForm availableParents={flatCategories} />;
+
 }

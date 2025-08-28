@@ -6,6 +6,7 @@ interface Category {
   id: string;
   name: string;
   slug: string;
+  parent?: Category;
   children?: Category[];
 }
 
@@ -25,16 +26,7 @@ export function CategoriesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // Check sessionStorage first
-        const cached = sessionStorage.getItem('categories');
-        const cacheTime = sessionStorage.getItem('categories-time');
-        const now = Date.now();
-        
-        if (cached && cacheTime && (now - parseInt(cacheTime)) < 300000) { // 5 minutes
-          setCategories(JSON.parse(cached));
-          setLoading(false);
-          return;
-        }
+        // Development mode - no caching, always fetch fresh data
 
         const response = await fetch('/api/categories');
         if (!response.ok) throw new Error('Failed to fetch categories');
@@ -43,10 +35,6 @@ export function CategoriesProvider({ children }: { children: ReactNode }) {
         const categoriesData = data.categories || [];
         
         setCategories(categoriesData);
-        
-        // Cache in sessionStorage
-        sessionStorage.setItem('categories', JSON.stringify(categoriesData));
-        sessionStorage.setItem('categories-time', now.toString());
         
       } catch (err) {
         console.error('Error fetching categories:', err);

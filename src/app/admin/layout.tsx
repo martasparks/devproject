@@ -52,6 +52,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link href="/admin/categories" className="hover:bg-gray-800 px-3 py-2 rounded">
               📂 Kategorijas
             </Link>
+            <Link href="/admin/manufacturers" className="hover:bg-gray-800 px-3 py-2 rounded">
+              🏭 Ražotāji
+            </Link>
             <Link href="/admin/settings" className="hover:bg-gray-800 px-3 py-2 rounded">
               ⚙️ Iestatījumi
             </Link>

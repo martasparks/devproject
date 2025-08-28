@@ -232,6 +232,7 @@ exports.Prisma.ProductBrandScalarFieldEnum = {
   brandCode: 'brandCode',
   name: 'name',
   slug: 'slug',
+  deliveryTime: 'deliveryTime',
   logoUrl: 'logoUrl',
   description: 'description',
   isActive: 'isActive',
