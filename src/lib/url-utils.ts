@@ -1,12 +1,3 @@
-/**
- * Processes URL for storage - removes any locale prefixes and keeps clean path
- * Examples:
- * - "mebeles/izpardosana" -> "mebeles/izpardosana"
- * - "/lv/products/chairs" -> "products/chairs" 
- * - "https://external.com" -> "https://external.com" (unchanged)
- * - "tel:+37122722280" -> "tel:+37122722280" (unchanged)
- * - "mailto:info@example.com" -> "mailto:info@example.com" (unchanged)
- */
 export function processSliderButtonUrl(url: string): string {
   if (!url || url.trim() === '') {
     return '';
@@ -14,7 +5,6 @@ export function processSliderButtonUrl(url: string): string {
 
   const trimmedUrl = url.trim();
 
-  // Return external URLs, protocols, anchors as-is
   if (
     trimmedUrl.startsWith('http://') ||
     trimmedUrl.startsWith('https://') ||
@@ -25,15 +15,12 @@ export function processSliderButtonUrl(url: string): string {
     return trimmedUrl;
   }
 
-  // Handle relative URLs - remove any locale prefix for clean storage
   let processedUrl = trimmedUrl;
   
-  // Remove leading slash if present
   if (processedUrl.startsWith('/')) {
     processedUrl = processedUrl.substring(1);
   }
 
-  // Remove locale prefixes if present (lv/, en/, ru/)
   const locales = ['lv', 'en', 'ru'];
   for (const locale of locales) {
     if (processedUrl.startsWith(`${locale}/`)) {
@@ -45,13 +32,6 @@ export function processSliderButtonUrl(url: string): string {
   return processedUrl;
 }
 
-/**
- * Converts stored URL to localized URL for frontend rendering
- * Examples:
- * - "mebeles/izpardosana" + "ru" -> "/ru/mebeles/izpardosana"
- * - "products/chairs" + "en" -> "/en/products/chairs"
- * - "https://external.com" + "lv" -> "https://external.com" (unchanged)
- */
 export function getLocalizedSliderUrl(storedUrl: string, locale: string): string {
   if (!storedUrl || storedUrl.trim() === '') {
     return '#';
@@ -59,7 +39,6 @@ export function getLocalizedSliderUrl(storedUrl: string, locale: string): string
 
   const trimmedUrl = storedUrl.trim();
 
-  // Return external URLs, protocols, anchors as-is
   if (
     trimmedUrl.startsWith('http://') ||
     trimmedUrl.startsWith('https://') ||
@@ -70,13 +49,9 @@ export function getLocalizedSliderUrl(storedUrl: string, locale: string): string
     return trimmedUrl;
   }
 
-  // For internal URLs, add the current locale prefix
   return `/${locale}/${trimmedUrl}`;
 }
 
-/**
- * Get examples for the placeholder based on locale
- */
 export function getUrlPlaceholderExamples(locale: string = 'lv'): {
   internal: string;
   external: string;
@@ -103,10 +78,6 @@ export function getUrlPlaceholderExamples(locale: string = 'lv'): {
   return examples[locale as keyof typeof examples] || examples.lv;
 }
 
-/**
- * For backward compatibility and form display
- */
 export function displaySliderButtonUrl(storedUrl: string): string {
-  // Since we now store URLs without locale, just return as-is
   return storedUrl || '';
 }
