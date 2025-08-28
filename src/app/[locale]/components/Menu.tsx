@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCategories } from "../contexts/CategoriesContext";
+import { getCategoryUrl } from "@lib/categories";
 
 interface MenuProps {
   mobile?: boolean;
@@ -12,20 +13,6 @@ export default function Menu({ mobile = false }: MenuProps) {
   const { categories, loading } = useCategories();
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] || 'lv';
-
-  // Generate correct nested URL for category
-  const getCategoryUrl = (category: any) => {
-    const path = [];
-    let current = category;
-    
-    // Build path from current category up to root
-    while (current) {
-      path.unshift(current.slug);
-      current = current.parent;
-    }
-    
-    return `/${currentLocale}/mebeles/${path.join('/')}`;
-  };
 
   if (loading) {
     return (
@@ -51,7 +38,7 @@ export default function Menu({ mobile = false }: MenuProps) {
         {categories.map((cat) => (
           <div key={cat.id} className="space-y-1">
             <Link 
-              href={getCategoryUrl(cat)}
+              href={getCategoryUrl(cat, currentLocale)}
               className="flex items-center justify-between px-4 py-3 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg transition-all duration-200"
             >
               <span>{cat.name}</span>
@@ -67,7 +54,7 @@ export default function Menu({ mobile = false }: MenuProps) {
                 {cat.children.map((sub) => (
                   <div key={sub.id} className="space-y-1">
                     <Link 
-                      href={getCategoryUrl(sub)}
+                      href={getCategoryUrl(sub, currentLocale)}
                       className="flex items-center justify-between px-4 py-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-blue-50/30 rounded-lg transition-all duration-200"
                     >
                       <div className="flex items-center">
@@ -81,13 +68,12 @@ export default function Menu({ mobile = false }: MenuProps) {
                       )}
                     </Link>
                     
-                    {/* Third level items */}
                     {sub.children && sub.children.length > 0 && (
                       <div className="ml-6 space-y-1">
                         {sub.children.map((third) => (
                           <Link 
                             key={third.id}
-                            href={getCategoryUrl(third)}
+                            href={getCategoryUrl(third, currentLocale)}
                             className="flex items-center px-4 py-2 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50/20 rounded-lg transition-all duration-200"
                           >
                             <div className="w-1 h-1 bg-slate-300 rounded-full mr-3"></div>
@@ -112,7 +98,7 @@ export default function Menu({ mobile = false }: MenuProps) {
         {categories.map((cat) => (
           <div key={cat.id} className="relative group">
             <Link 
-              href={getCategoryUrl(cat)}
+              href={getCategoryUrl(cat, currentLocale)}
               className="inline-flex items-center px-6 py-4 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 transition-all duration-200 rounded-lg mx-1 relative group"
             >
               <span className="relative z-10">{cat.name}</span>
@@ -130,10 +116,10 @@ export default function Menu({ mobile = false }: MenuProps) {
                   <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-l border-t border-slate-200/60 rotate-45"></div>
                   
                   <div className="space-y-1 px-2">
-                    {cat.children.map((sub, subIndex) => (
+                    {cat.children.map((sub) => (
                       <div key={sub.id} className="relative group/sub">
                         <Link 
-                          href={getCategoryUrl(sub)}
+                          href={getCategoryUrl(sub, currentLocale)}
                           className="flex items-center justify-between px-4 py-3 text-sm text-slate-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 rounded-lg transition-all duration-200"
                         >
                           <div className="flex items-center">
@@ -147,7 +133,6 @@ export default function Menu({ mobile = false }: MenuProps) {
                           )}
                         </Link>
                         
-                        {/* Third level dropdown */}
                         {sub.children && sub.children.length > 0 && (
                           <div className="absolute left-full top-0 ml-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-300 ease-out">
                             <div className="bg-white rounded-xl shadow-xl border border-slate-200/60 py-3 min-w-52 backdrop-blur-sm">
@@ -157,7 +142,7 @@ export default function Menu({ mobile = false }: MenuProps) {
                                 {sub.children.map((third) => (
                                   <Link 
                                     key={third.id}
-                                    href={getCategoryUrl(third)}
+                                    href={getCategoryUrl(third, currentLocale)}
                                     className="flex items-center px-4 py-2 text-sm text-slate-600 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 rounded-lg transition-all duration-200"
                                   >
                                     <div className="w-1.5 h-1.5 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mr-3"></div>

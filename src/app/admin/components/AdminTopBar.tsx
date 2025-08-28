@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
@@ -10,24 +9,20 @@ import {
   ArrowRightOnRectangleIcon,
   HomeIcon
 } from '@heroicons/react/24/outline';
-import DynamicIcon from '../../[locale]/components/DynamicIcon';
-
-interface AdminTopBarLink {
-  id: number;
-  title: string;
-  url: string;
-  icon?: string | null;
-  isActive: boolean;
-  order: number;
-}
 
 interface AdminTopBarProps {
-  links: AdminTopBarLink[];
+  userSession?: {
+    user?: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role?: string;
+    };
+  } | null;
 }
 
 
-export default function AdminTopBar({ links }: AdminTopBarProps) {
-  const { data: session } = useSession();
+export default function AdminTopBar({ userSession }: AdminTopBarProps) {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -57,8 +52,8 @@ export default function AdminTopBar({ links }: AdminTopBarProps) {
     <div className="bg-gray-800 text-white border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-12 text-sm">
-          {/* Left side - Admin quick links */}
-          <div className="flex items-center space-x-6">
+          {/* Left side - Back to site */}
+          <div className="flex items-center">
             <button
               onClick={handleBackToSite}
               className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
@@ -66,21 +61,6 @@ export default function AdminTopBar({ links }: AdminTopBarProps) {
               <HomeIcon className="w-4 h-4" />
               <span>Atpakaļ uz vietni</span>
             </button>
-            
-            {links.length > 0 && <div className="h-4 w-px bg-gray-600"></div>}
-            
-            {links
-              .filter(link => link.isActive)
-              .map((link) => (
-                <Link
-                  key={link.id}
-                  href={link.url}
-                  className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
-                >
-                  <DynamicIcon iconName={link.icon} />
-                  <span>{link.title}</span>
-                </Link>
-              ))}
           </div>
 
           {/* Right side - Admin info & User menu */}
@@ -92,23 +72,23 @@ export default function AdminTopBar({ links }: AdminTopBarProps) {
             <div className="h-4 w-px bg-gray-600"></div>
 
             {/* User Menu */}
-            {session?.user && (
+            {userSession?.user && (
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"
                 >
-                  {session.user.image ? (
+                  {userSession.user.image ? (
                     <img
-                      src={session.user.image}
-                      alt={session.user.name || ''}
+                      src={userSession.user.image}
+                      alt={userSession.user.name || ''}
                       className="w-6 h-6 rounded-full border border-gray-600"
                     />
                   ) : (
                     <UserIcon className="w-5 h-5" />
                   )}
                   <span className="max-w-32 truncate">
-                    {session.user.name || session.user.email}
+                    {userSession.user.name || userSession.user.email}
                   </span>
                   <ChevronDownIcon className="w-3 h-3" />
                 </button>
@@ -117,7 +97,7 @@ export default function AdminTopBar({ links }: AdminTopBarProps) {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
                       <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-200">
-                        {session.user.role} lietotājs
+                        {userSession.user.role} lietotājs
                       </div>
                       
                       <Link

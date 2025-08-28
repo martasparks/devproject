@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import AdminTopBar from "./components/AdminTopBar";
-import prisma from "@lib/prisma";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -12,18 +11,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     redirect("/");
   }
 
-  const topBarLinks = await prisma.topBar.findMany({
-    where: { isActive: true },
-    orderBy: [
-      { order: 'asc' },
-      { createdAt: 'desc' }
-    ]
-  });
-
   return (
     <div className="min-h-screen flex flex-col">
       {/* Admin Top Bar */}
-      <AdminTopBar links={topBarLinks} />
+      <AdminTopBar userSession={session} />
       
       <div className="flex flex-1">
         {/* Sidebar */}

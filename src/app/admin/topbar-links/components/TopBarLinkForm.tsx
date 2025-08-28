@@ -41,8 +41,8 @@ export default function TopBarLinkForm({ initialData, isEditing = false }: TopBa
 
     try {
       const url = isEditing 
-        ? `/api/admin/topbar-links/${initialData?.id}`
-        : '/api/admin/topbar-links';
+        ? `/api/topbar-links/${initialData?.id}`
+        : '/api/topbar-links';
       
       const method = isEditing ? 'PUT' : 'POST';
 

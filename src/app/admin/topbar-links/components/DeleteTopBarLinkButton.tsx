@@ -20,7 +20,7 @@ export default function DeleteTopBarLinkButton({ linkId, linkTitle }: DeleteTopB
     setIsDeleting(true);
     
     try {
-      const response = await fetch(`/api/admin/topbar-links/${linkId}`, {
+      const response = await fetch(`/api/topbar-links/${linkId}`, {
         method: 'DELETE',
       });
 

@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { XMarkIcon, ChevronRightIcon, TruckIcon, CreditCardIcon, HeartIcon, UserIcon, PhoneIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, ChevronRightIcon, HeartIcon, UserIcon, PhoneIcon, ChevronLeftIcon, CreditCardIcon, TruckIcon } from '@heroicons/react/24/outline';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useCategories } from '../contexts/CategoriesContext';
 import { SignInModal } from '@/components/signin-modal';
+import { getCategoryUrl } from "@lib/categories";
 
 interface MobileOffcanvasProps {
   isOpen: boolean;
@@ -24,14 +25,13 @@ export default function MobileOffcanvas({ isOpen, onClose }: MobileOffcanvasProp
   const pathname = usePathname();
   const { categories, loading } = useCategories();
   const { data: session } = useSession();
-  const [hasMounted, setHasMounted] = useState(false);
+  
   const [currentView, setCurrentView] = useState<'main' | 'categories' | 'subcategories'>('main');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [navigationStack, setNavigationStack] = useState<{title: string, view: string, category?: any}[]>([]);
 
   // Get current locale from pathname
   const currentLocale = pathname.split('/')[1] || 'lv';
-  const currentLang = languages.find(lang => lang.code === currentLocale) || languages[0];
 
   const handleLanguageChange = (langCode: string) => {
     const newPath = pathname.replace(`/${currentLocale}`, `/${langCode}`);
@@ -70,7 +70,7 @@ export default function MobileOffcanvas({ isOpen, onClose }: MobileOffcanvasProp
   };
 
   const handleCategoryClick = (category: any) => {
-    router.push(`/${currentLocale}/mebeles/${category.slug}`);
+    router.push(getCategoryUrl(category, currentLocale));
     onClose();
   };
 
@@ -87,9 +87,6 @@ export default function MobileOffcanvas({ isOpen, onClose }: MobileOffcanvasProp
   };
 
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   // Prevent body scroll when offcanvas is open
   useEffect(() => {

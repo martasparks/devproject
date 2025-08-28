@@ -136,7 +136,7 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/admin/settings', {
+      const response = await fetch('/api/settings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
