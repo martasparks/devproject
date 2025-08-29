@@ -18,6 +18,11 @@ export default async function UsersPage() {
       role: true,
       emailVerified: true,
       image: true,
+      accounts: {
+        select: {
+          provider: true,
+        }
+      }
     },
     orderBy: {
       id: 'asc'
@@ -25,8 +30,34 @@ export default async function UsersPage() {
   });
 
   const adminUsers = users.filter(user => user.role === 'ADMIN');
-  const regularUsers = users.filter(user => user.role === 'USER');
+  const regularUsers = users.filter(user => user.role === 'CUSTOMER');
   const verifiedUsers = users.filter(user => user.emailVerified);
+
+  // Helper function to get provider display name
+  const getProviderDisplayName = (provider: string) => {
+    const providerNames: { [key: string]: string } = {
+      'google': 'Google',
+      'github': 'GitHub',
+      'facebook': 'Facebook',
+      'twitter': 'Twitter',
+      'discord': 'Discord',
+      'credentials': 'E-pasts/Parole',
+    };
+    return providerNames[provider] || provider;
+  };
+
+  // Helper function to get provider badge styling
+  const getProviderBadgeStyle = (provider: string) => {
+    const styles: { [key: string]: string } = {
+      'google': 'bg-green-100 text-gray',
+      'github': 'bg-gray-100 text-gray-800',
+      'facebook': 'bg-blue-100 text-blue-800',
+      'twitter': 'bg-sky-100 text-sky-800',
+      'discord': 'bg-indigo-100 text-indigo-800',
+      'credentials': 'bg-green-100 text-green-800',
+    };
+    return styles[provider] || 'bg-gray-100 text-gray-800';
+  };
 
   if (!users || users.length === 0) {
     return (
@@ -124,66 +155,62 @@ export default async function UsersPage() {
                   E-pasts
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Loma
+                  Profila tips
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Statuss
+                  Reģistrēts ar
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      {user.image ? (
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <img className="h-10 w-10 rounded-full" src={user.image} alt="" />
-                        </div>
-                      ) : (
-                        <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
-                          <UserIcon className="w-5 h-5 text-gray-400" />
-                        </div>
-                      )}
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
-                          {user.name || "Nav norādīts"}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          ID: {user.id}
+              {users.map((user) => {
+                const provider = user.accounts[0]?.provider || 'credentials';
+                
+                return (
+                  <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        {user.image ? (
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <img className="h-10 w-10 rounded-full" src={user.image} alt="" />
+                          </div>
+                        ) : (
+                          <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
+                            <UserIcon className="w-5 h-5 text-gray-400" />
+                          </div>
+                        )}
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.name || "Nav norādīts"}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            ID: {user.id}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
-                      {user.email}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.role === 'ADMIN' 
-                        ? 'bg-red-100 text-red-800' 
-                        : 'bg-green-100 text-green-800'
-                    }`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {user.emailVerified ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        <CheckCircleIcon className="w-3 h-3 mr-1" />
-                        Apstiprināts
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900 font-mono bg-gray-50 px-2 py-1 rounded">
+                        {user.email}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        user.role === 'ADMIN' 
+                          ? 'bg-red-100 text-red-800' 
+                          : 'bg-green-100 text-green-800'
+                      }`}>
+                        {user.role}
                       </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        <XCircleIcon className="w-3 h-3 mr-1" />
-                        Nav apstiprināts
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getProviderBadgeStyle(provider)}`}>
+                        {getProviderDisplayName(provider)}
                       </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

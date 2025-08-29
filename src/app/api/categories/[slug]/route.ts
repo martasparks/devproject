@@ -10,45 +10,27 @@ export async function GET(
     
     const category = await prisma.category.findUnique({
       where: { slug },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
+      include: {
         parent: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
+          include: {
             parent: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-                parent: {
-                  select: {
-                    id: true,
-                    name: true,
-                    slug: true,
-                  }
-                }
+              include: {
+                parent: true
               }
             }
           }
         },
         children: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            children: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-              }
+          include: {
+            children: true,
+            _count: {
+              select: { products: true }
             }
           },
           orderBy: { name: 'asc' }
+        },
+        _count: {
+          select: { products: true }
         }
       }
     });
@@ -59,6 +41,8 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    // Category already has _count from include
 
     // Build breadcrumb path
     const breadcrumbs = [];

@@ -26,6 +26,32 @@ export default function EditTranslationForm({ translation }: EditTranslationForm
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedNamespace, setSelectedNamespace] = useState(translation.namespace);
+
+  // Common namespaces used in the application
+  const commonNamespaces = [
+    { value: 'Header', label: 'Header - Galvenā galvene' },
+    { value: 'TopBar', label: 'TopBar - Augšējā josla' },
+    { value: 'Footer', label: 'Footer - Kājene' },
+    { value: 'Menu', label: 'Menu - Navigācijas izvēlne' },
+    { value: 'Categories', label: 'Categories - Kategorijas' },
+    { value: 'FeaturedProducts', label: 'FeaturedProducts - Ieteiktie produkti' },
+    { value: 'Features', label: 'Features - Funkcijas (piegāde, maksājumi, atgriešana)' },
+    { value: 'HeroSlider', label: 'HeroSlider - Galvenais slaidrādis' },
+    { value: 'BottomMenu', label: 'BottomMenu - Apakšējā izvēlne' },
+    { value: 'MobileOffcanvas', label: 'MobileOffcanvas - Mobilā izvēlne' },
+    { value: 'ProductCard', label: 'ProductCard - Produkta karte' },
+    { value: 'ProductDetail', label: 'ProductDetail - Produkta detaļas' },
+    { value: 'CategoryContent', label: 'CategoryContent - Kategorijas saturs' },
+    { value: 'Cart', label: 'Cart - Grozs' },
+    { value: 'Wishlist', label: 'Wishlist - Vēlmes saraksts' },
+    { value: 'SignIn', label: 'SignIn - Ielogošanās' },
+    { value: 'TestPage', label: 'TestPage - Testa lapa' },
+    { value: 'HomePage', label: 'HomePage - Sākumlapa' },
+    { value: 'Admin', label: 'Admin - Administrācijas panelis' },
+    { value: 'Settings', label: 'Settings - Iestatījumi' },
+    { value: 'custom', label: 'Cits (ievadīt pašam)' },
+  ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +60,7 @@ export default function EditTranslationForm({ translation }: EditTranslationForm
     const formData = new FormData(e.currentTarget);
     const data = {
       locale: formData.get('locale') as string,
-      namespace: formData.get('namespace') as string,
+      namespace: selectedNamespace === 'custom' ? formData.get('customNamespace') as string : selectedNamespace,
       key: formData.get('key') as string,
       value: formData.get('value') as string,
     };
@@ -171,16 +197,40 @@ export default function EditTranslationForm({ translation }: EditTranslationForm
 
             <div className="space-y-2">
               <Label htmlFor="namespace">Namespace *</Label>
-              <Input
+              <select
                 id="namespace"
-                name="namespace" 
+                name="namespace"
+                value={selectedNamespace}
+                onChange={(e) => setSelectedNamespace(e.target.value)}
+                required
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="">Izvēlieties namespace</option>
+                {commonNamespaces.map((ns) => (
+                  <option key={ns.value} value={ns.value}>
+                    {ns.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {selectedNamespace === 'custom' && (
+            <div className="space-y-2">
+              <Label htmlFor="customNamespace">Pielāgots namespace *</Label>
+              <Input
+                id="customNamespace"
+                name="customNamespace" 
                 type="text"
                 defaultValue={translation.namespace}
                 required
-                placeholder="piemēram: Header, HomePage, etc."
+                placeholder="piemēram: MyCustomComponent"
               />
+              <p className="text-xs text-gray-600">
+                Ievadiet pielāgotu namespace nosaukumu
+              </p>
             </div>
-          </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="key">Atslēga *</Label>

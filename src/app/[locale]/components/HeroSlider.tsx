@@ -8,7 +8,6 @@ import { getLocalizedSliderUrl } from '@/lib/url-utils';
 
 interface Slider {
   id: number;
-  // Desktop version
   desktopTitle?: string | null;
   desktopSubtitle?: string | null;
   desktopDescription?: string | null;
@@ -16,8 +15,7 @@ interface Slider {
   desktopButtonText?: string | null;
   desktopButtonUrl?: string | null;
   desktopShowContent: boolean;
-  
-  // Mobile version
+
   mobileTitle?: string | null;
   mobileSubtitle?: string | null;
   mobileDescription?: string | null;
@@ -25,15 +23,14 @@ interface Slider {
   mobileButtonText?: string | null;
   mobileButtonUrl?: string | null;
   mobileShowContent: boolean;
-  
-  // Legacy fields for backward compatibility
+
   title?: string | null;
   subtitle?: string | null;
   description?: string | null;
   buttonText?: string | null;
   buttonUrl?: string | null;
   showContent: boolean;
-  
+
   isActive: boolean;
   order: number;
 }
@@ -49,8 +46,8 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
   const pathname = usePathname();
   const currentLocale = pathname.split('/')[1] || 'lv';
 
-  const TRANSITION_MS = 600; // crossfade duration
-  const AUTOPLAY_MS = 7000;  // time each slide stays
+  const TRANSITION_MS = 600;
+  const AUTOPLAY_MS = 7000;
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -138,11 +135,10 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/30 pointer-events-none" />
       </div>
 
-      {/* Desktop Content */}
       {slider.desktopShowContent && (
-        <div className="hidden md:flex relative z-20 items-center justify-center h-full py-6">
-          <div className="max-w-7xl mx-auto px-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
-            <div className="max-w-3xl mx-auto text-center">
+        <div className="hidden md:flex relative z-20 items-start justify-start h-full pl-24 pt-24">
+          <div className="w-full px-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
+            <div className="max-w-3xl text-left">
               <h2 className="text-5xl font-bold mb-5">{slider.desktopTitle || slider.title}</h2>
               {(slider.desktopSubtitle || slider.subtitle) && (
                 <h3 className="text-2xl mb-2">{slider.desktopSubtitle || slider.subtitle}</h3>
@@ -164,7 +160,7 @@ export default function HeroSlider({ initialSliders }: HeroSliderProps) {
       )}
       
       {slider.mobileShowContent && (
-        <div className="md:hidden relative z-20 flex items-center h-full py-6">
+        <div className="md:hidden relative z-20 flex items-center justify-center text-center h-full px-6 py-6">
           <div className="max-w-7xl mx-auto px-4 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]">
             <div className="max-w-3xl">
               {slider.mobileTitle && (

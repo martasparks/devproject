@@ -25,58 +25,25 @@ export async function uploadToS3(file: File, folder: string = 'uploads'): Promis
     const arrayBuffer = await file.arrayBuffer();
     const originalBuffer = Buffer.from(arrayBuffer);
 
-    // Check if it's an image that needs optimization
     if (isImageFile(file) && needsOptimization(file)) {
       try {
         let optimizationOptions = {
-          quality: 80, // Good balance between quality and file size
+          quality: 80,
         };
-
-        // Apply specific optimizations for sliders
-        if (folder.includes('sliders')) {
-          if (folder.includes('desktop')) {
-            optimizationOptions = {
-              quality: 80,
-              width: 1920,
-              height: 1080,
-              fit: 'cover' as const
-            };
-          } else if (folder.includes('mobile')) {
-            optimizationOptions = {
-              quality: 80,
-              width: 1080,
-              height: 1350,
-              fit: 'inside' as const // Preserve full image without cropping
-            };
-          } else {
-            // General slider optimization
-            optimizationOptions = {
-              quality: 80,
-              width: 1920,
-              height: 1080,
-              fit: 'cover' as const
-            };
-          }
-        }
         
-        // Optimize to WebP format with high quality
         buffer = await optimizeImageToWebP(originalBuffer, optimizationOptions);
         fileName = getOptimizedFileName(file.name, folder);
         contentType = 'image/webp';
         
-        console.log(`Optimized ${file.name} to WebP format for ${folder}`);
       } catch (optimizationError) {
         console.warn('Image optimization failed, uploading original:', optimizationError);
-        // Log the specific error for debugging
         console.error('Optimization error details:', optimizationError);
-        // Fallback to original file if optimization fails
         buffer = originalBuffer;
         const fileExtension = file.name.split('.').pop();
         fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
         contentType = file.type;
       }
     } else {
-      // Use original file for non-images or already optimized WebP
       buffer = originalBuffer;
       const fileExtension = file.name.split('.').pop();
       fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
@@ -88,8 +55,6 @@ export async function uploadToS3(file: File, folder: string = 'uploads'): Promis
       Key: fileName,
       Body: buffer,
       ContentType: contentType,
-      // ACL: 'public-read', // ❌ IZŅEMT
-      // (pēc izvēles) kešošana bildēm:
       CacheControl: 'public, max-age=31536000, immutable',
     });
 

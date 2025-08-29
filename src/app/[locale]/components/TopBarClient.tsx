@@ -73,7 +73,7 @@ export default function TopBarClient({ children }: TopBarClientProps) {
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 transition-colors"
-                aria-label={t('languageSelector', { default: 'Valodas izvēle' })}
+                aria-label={t('languageSelector', { default: 'Izvēlies valodu' })}
               >
                 <span>{currentLang.flag}</span>
                 <span>{currentLang.code.toUpperCase()}</span>

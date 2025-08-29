@@ -1,18 +1,17 @@
 import { optimizeImageToWebP, ImageOptimizationOptions } from './image-optimizer';
 
-// Slider specific optimization settings
 export const SLIDER_IMAGE_OPTIONS: ImageOptimizationOptions = {
-  quality: 80, // Good balance between quality and file size for hero images
-  width: 1920, // Full HD width for sliders
-  height: 1080, // Full HD height for sliders
-  fit: 'cover' // Cover to maintain aspect ratio
+  quality: 80,
+  width: 1920,
+  height: 1080,
+  fit: 'cover'
 };
 
 export const SLIDER_MOBILE_OPTIONS: ImageOptimizationOptions = {
-  quality: 80, // Good balance between quality and file size
-  width: 1080, // Instagram post width
-  height: 1350, // Instagram post height (4:5 aspect ratio)
-  fit: 'inside' // Use 'inside' to preserve full image without cropping
+  quality: 80,
+  width: 1080,
+  height: 1350,
+  fit: 'inside'
 };
 
 export async function optimizeSliderImage(
@@ -32,7 +31,6 @@ export function getSliderFileName(originalName: string, isMobile: boolean = fals
   return `sliders/${timestamp}-${random}-${nameWithoutExt}${suffix}.webp`;
 }
 
-// Alternative upload function specifically for sliders with multiple sizes
 export async function uploadSliderToS3(file: File): Promise<{
   desktop?: { url: string; key: string };
   mobile?: { url: string; key: string };
@@ -41,7 +39,6 @@ export async function uploadSliderToS3(file: File): Promise<{
   try {
     const { uploadToS3 } = await import('./s3-upload');
     
-    // Create a new File object that will be optimized by the main upload function
     const result = await uploadToS3(file, 'sliders');
     
     if (result.success && result.url && result.key) {

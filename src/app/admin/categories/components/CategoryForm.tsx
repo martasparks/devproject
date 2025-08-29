@@ -7,12 +7,17 @@ import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CheckIcon, ArrowLeftIcon, LightBulbIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ArrowLeftIcon, LightBulbIcon, PhotoIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import CategoryPlaceholder from '@/components/CategoryPlaceholder';
 
 interface Category {
   id: string;
   name: string;
   slug: string;
+  description?: string;
+  imageUrl?: string;
+  imageKey?: string;
   parentId?: string | null;
   parent?: { id: string; name: string; slug: string } | null;
   depth?: number;
@@ -27,9 +32,13 @@ interface CategoryFormProps {
 export default function CategoryForm({ initialData, isEditing = false, availableParents = [] }: CategoryFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
     slug: initialData?.slug || '',
+    description: initialData?.description || '',
+    imageUrl: initialData?.imageUrl || '',
+    imageKey: initialData?.imageKey || '',
     parentId: initialData?.parentId || '',
   });
 
@@ -62,6 +71,53 @@ export default function CategoryForm({ initialData, isEditing = false, available
     });
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Lūdzu izvēlieties attēla failu.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast.error('Attēls ir pārāk liels. Maksimālais izmērs ir 5MB.');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'categories');
+
+      const uploadResponse = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const uploadData = await uploadResponse.json();
+      
+      setFormData(prev => ({
+        ...prev,
+        imageUrl: uploadData.url,
+        imageKey: uploadData.key || ''
+      }));
+      
+      toast.success('Attēls augšupielādēts veiksmīgi!');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Kļūda augšupielādējot attēlu.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.slug) {
@@ -89,6 +145,9 @@ export default function CategoryForm({ initialData, isEditing = false, available
         body: JSON.stringify({
           name: formData.name,
           slug: formData.slug,
+          description: formData.description || null,
+          imageUrl: formData.imageUrl || null,
+          imageKey: formData.imageKey || null,
           parentId: formData.parentId || null,
         }),
       });
@@ -183,6 +242,124 @@ export default function CategoryForm({ initialData, isEditing = false, available
             <p className="text-xs text-gray-600">
               URL draudzīgs identifikators, automātiski ģenerējas no nosaukuma
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Apraksts</Label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Īss apraksts kategorijai..."
+            />
+          </div>
+
+          {/* Category Image Upload */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">Kategorijas attēls</Label>
+              <p className="text-xs text-gray-500">
+                Ieteicamais izmērs: 800x450px
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Image Preview */}
+              <div className="space-y-2">
+                <Label className="text-xs text-gray-600">Priekšskatījums</Label>
+                <div className="aspect-video bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
+                  {formData.imageUrl ? (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={formData.imageUrl}
+                        alt="Kategorijas attēls"
+                        width={400}
+                        height={225}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, imageUrl: '', imageKey: '' }))}
+                        className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <CategoryPlaceholder 
+                      name={formData.name || 'Kategorija'}
+                      size="sm"
+                      showIcon={false}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Upload Controls */}
+              <div className="lg:col-span-2 space-y-4">
+                {/* File Upload */}
+                <div className="space-y-2">
+                  <Label className="text-xs text-gray-600">Augšupielādēt failu</Label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      ref={(ref) => {
+                        if (ref) {
+                          (window as any).categoryImageFileInput = ref;
+                        }
+                      }}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => (window as any).categoryImageFileInput?.click()}
+                      disabled={uploading}
+                    >
+                      <CloudArrowUpIcon className="w-4 h-4 mr-2" />
+                      {uploading ? 'Augšupielādē...' : 'Izvēlēties failu'}
+                    </Button>
+                    {uploading && (
+                      <div className="text-xs text-gray-500">
+                        Augšupielādē attēlu...
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Manual URL Input */}
+                <div className="space-y-2">
+                  <Label htmlFor="imageUrl" className="text-xs text-gray-600">Vai ievadiet URL</Label>
+                  <Input
+                    id="imageUrl"
+                    value={formData.imageUrl || ''}
+                    onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
+                    placeholder="https://example.com/image.jpg"
+                    className="text-sm"
+                  />
+                </div>
+
+                {/* S3 Key */}
+                <div className="space-y-2">
+                  <Label htmlFor="imageKey" className="text-xs text-gray-600">S3 atslēga (automātiski)</Label>
+                  <Input
+                    id="imageKey"
+                    value={formData.imageKey || ''}
+                    onChange={(e) => setFormData(prev => ({ ...prev, imageKey: e.target.value }))}
+                    placeholder="categories/image-key"
+                    className="text-sm"
+                    disabled={uploading}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-2">

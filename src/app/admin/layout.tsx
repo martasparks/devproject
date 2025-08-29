@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   return (
     <div className="min-h-screen flex flex-col">
       {/* Admin Top Bar */}
-      <AdminTopBar userSession={session} />
+      <AdminTopBar initialSession={session} />
       
       <div className="flex flex-1">
         {/* Sidebar */}
@@ -50,12 +50,13 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               ⚙️ Iestatījumi
             </Link>
             
+            <Link href="/admin/products" className="hover:bg-gray-800 px-3 py-2 rounded">
+              📦 Produkti
+            </Link>
+            
             <div className="border-t border-gray-700 my-4"></div>
             <div className="text-xs text-gray-500 px-3 mb-2">NĀKAMIE</div>
             
-            <div className="px-3 py-2 text-gray-600 text-sm cursor-not-allowed">
-              📦 Produkti (tiks pievienots)
-            </div>
             <div className="px-3 py-2 text-gray-600 text-sm cursor-not-allowed">
               🛍️ Pasūtījumi (tiks pievienots)
             </div>

@@ -40,7 +40,6 @@ const commonSettingKeys = [
 export default function SettingForm({ initialData, isEditing = false }: SettingFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [selectedKeyType, setSelectedKeyType] = useState(
     initialData?.key ? 
       (commonSettingKeys.find(k => k.value === initialData.key)?.value || 'custom') : 
@@ -53,6 +52,12 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
     imageUrl: initialData?.imageUrl || '',
     imageKey: initialData?.imageKey || '',
   });
+
+  // Local image state for new uploads
+  const [localImage, setLocalImage] = useState<{
+    file: File;
+    previewUrl: string;
+  } | null>(null);
 
   // Sync key when selectedKeyType changes  
   useEffect(() => {
@@ -70,57 +75,82 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', 'settings');
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.success && result.url && result.key) {
-        setFormData(prev => ({
-          ...prev,
-          imageUrl: result.url,
-          imageKey: result.key,
-        }));
-        toast.success('Attēls veiksmīgi augšupielādēts!', {
-          duration: 3000,
-          icon: '✅',
-        });
-      } else {
-        throw new Error(result.error || 'Upload failed');
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Kļūda augšupielādējot attēlu', {
-        duration: 5000,
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Faila izmērs nedrīkst pārsniegt 5MB', {
+        duration: 4000,
         icon: '❌',
       });
-    } finally {
-      setUploading(false);
+      return;
     }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Lūdzu izvēlieties attēla failu', {
+        duration: 4000,
+        icon: '❌',
+      });
+      return;
+    }
+
+    // Create preview URL using FileReader for better compatibility
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const previewUrl = event.target?.result as string;
+      setLocalImage({ file, previewUrl });
+      
+      toast.success('Attēls sagatavots augšupielādei!', {
+        duration: 3000,
+        icon: '✅',
+      });
+    };
+    reader.onerror = () => {
+      toast.error('Kļūda attēla priekšskatīšanā', {
+        duration: 4000,
+        icon: '❌',
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeImage = () => {
-    setFormData({
-      ...formData,
-      imageUrl: '',
-      imageKey: '',
-    });
+    if (localImage) {
+      setLocalImage(null);
+    }
+    if (formData.imageUrl) {
+      setFormData({
+        ...formData,
+        imageUrl: '',
+        imageKey: '',
+      });
+    }
     toast.success('Attēls noņemts', {
       duration: 2000,
       icon: '🗑️',
     });
+  };
+
+  const uploadImageToS3 = async (file: File): Promise<{ url: string; key: string }> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', 'settings');
+
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.success || !result.url || !result.key) {
+      throw new Error(result.error || 'Upload failed');
+    }
+
+    return { url: result.url, key: result.key };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -136,12 +166,44 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
     setIsSubmitting(true);
 
     try {
+      let finalImageUrl = formData.imageUrl;
+      let finalImageKey = formData.imageKey;
+
+      // Upload new image to S3 if there's a local image
+      if (localImage) {
+        toast.loading('Augšupielādē attēlu...', { id: 'upload' });
+        
+        try {
+          const uploadResult = await uploadImageToS3(localImage.file);
+          finalImageUrl = uploadResult.url;
+          finalImageKey = uploadResult.key;
+          
+          toast.success('Attēls veiksmīgi augšupielādēts!', { 
+            id: 'upload',
+            duration: 3000,
+            icon: '✅',
+          });
+        } catch (error) {
+          toast.error('Kļūda augšupielādējot attēlu', { 
+            id: 'upload',
+            duration: 5000,
+            icon: '❌',
+          });
+          throw error;
+        }
+      }
+
+      // Submit form data
       const response = await fetch('/api/settings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          imageUrl: finalImageUrl,
+          imageKey: finalImageKey,
+        }),
       });
 
       if (!response.ok) {
@@ -174,6 +236,16 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
       setIsSubmitting(false);
     }
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // FileReader doesn't need cleanup like URL.createObjectURL
+    };
+  }, []);
+
+  // Get the image to display (local preview or existing image)
+  const displayImage = localImage?.previewUrl || formData.imageUrl;
 
   return (
     <div className="space-y-8">
@@ -248,27 +320,32 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
           </div>
 
           <div className="space-y-2">
-            <Label>Attēls (izvēles)</Label>
+            <Label>Attēls</Label>
             
-            {formData.imageUrl ? (
+            {displayImage ? (
               <div className="space-y-3">
-                <div className="relative inline-block">
+                <div className="relative inline-block group">
                   <img
-                    src={formData.imageUrl}
+                    src={displayImage}
                     alt="Setting image"
-                    className="w-32 h-32 object-cover rounded-lg border border-gray-200"
+                    className="w-32 h-32 object-contain rounded-lg border border-gray-200"
                   />
+                  {/* Remove button overlay */}
+                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 rounded-lg flex items-center justify-center">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={removeImage}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={removeImage}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <TrashIcon className="w-4 h-4 mr-2" />
-                  Noņemt attēlu
-                </Button>
+                <p className="text-xs text-gray-500">
+                  {localImage ? 'Attēls tiks augšupielādēts pēc formas nosūtīšanas' : 'Esošais attēls'}
+                </p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -287,16 +364,9 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
                       className="hidden"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      disabled={uploading}
                     />
                   </label>
                 </div>
-                {uploading && (
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    <p className="text-sm text-blue-600">Augšupielādē...</p>
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -307,7 +377,7 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
                 Atcelt
               </Link>
             </Button>
-            <Button type="submit" disabled={isSubmitting || uploading}>
+            <Button type="submit" disabled={isSubmitting}>
               <CheckIcon className="w-4 h-4" />
               {isSubmitting 
                 ? 'Saglabā...' 
@@ -334,6 +404,10 @@ export default function SettingForm({ initialData, isEditing = false }: SettingF
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
                 <span>Logotipa iestatījumam pievienojiet attēlu</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>
+                <span>Attēls tiks augšupielādēts tikai pēc veiksmīgas formas nosūtīšanas</span>
               </li>
               <li className="flex items-start space-x-2">
                 <span className="w-1 h-1 bg-yellow-600 rounded-full mt-2 flex-shrink-0"></span>

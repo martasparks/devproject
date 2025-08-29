@@ -48,7 +48,7 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const { name, slug, parentId } = await request.json();
+    const { name, slug, description, imageUrl, imageKey, parentId } = await request.json();
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -86,6 +86,9 @@ export async function PUT(
       data: {
         name,
         slug,
+        description: description || null,
+        imageUrl: imageUrl || null,
+        imageKey: imageKey || null,
         parentId: parentId || null,
       },
       include: {

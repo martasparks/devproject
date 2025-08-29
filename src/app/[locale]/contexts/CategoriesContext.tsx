@@ -6,6 +6,7 @@ interface Category {
   id: string;
   name: string;
   slug: string;
+  imageUrl?: string;
   parent?: Category;
   children?: Category[];
 }
